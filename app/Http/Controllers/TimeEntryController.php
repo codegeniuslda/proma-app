@@ -26,7 +26,13 @@ class TimeEntryController extends Controller
             $query->whereDate('date', '<=', $request->input('date_to'));
         }
 
-        $timeEntries = $query->latest()->paginate(10)->withQueryString();
+        $allowedPerPage = [25, 50, 100];
+        $perPage = (int) $request->input('per_page', 25);
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 25;
+        }
+
+        $timeEntries = $query->latest()->paginate($perPage)->withQueryString();
         $collaborators = Collaborator::orderBy('name')->get();
 
         return view('time_entries.index', compact('timeEntries', 'collaborators'));

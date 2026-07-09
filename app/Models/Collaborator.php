@@ -13,7 +13,13 @@ class Collaborator extends Model
         'name',
         'workload_hours',
         'establishment',
+        'establishment_id',
     ];
+
+    public function establishmentRelation()
+    {
+        return $this->belongsTo(Establishment::class, 'establishment_id');
+    }
 
     public function timeEntries()
     {

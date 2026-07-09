@@ -11,7 +11,7 @@
     </div>
 
     <form method="GET" action="{{ route('time-entries.index') }}" class="card mb-16" style="padding:12px;">
-        <div class="grid grid-3">
+        <div class="grid grid-4">
             <div>
                 <label for="collaborator_id">Colaborador</label>
                 <select id="collaborator_id" name="collaborator_id">
@@ -32,6 +32,15 @@
             <div>
                 <label for="date_to">Data Final</label>
                 <input type="date" id="date_to" name="date_to" value="{{ request('date_to') }}">
+            </div>
+
+            <div>
+                <label for="per_page">Mostrar</label>
+                <select id="per_page" name="per_page">
+                    <option value="25" @selected((int) request('per_page', 25)===25)>25</option>
+                    <option value="50" @selected((int) request('per_page')===50)>50</option>
+                    <option value="100" @selected((int) request('per_page')===100)>100</option>
+                </select>
             </div>
         </div>
 

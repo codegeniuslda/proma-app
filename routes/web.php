@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EstablishmentController;
 use App\Http\Controllers\TimeEntryController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/time-entries');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/time-entries/import', [TimeEntryController::class, 'importForm'])->name('time-entries.import.form');
 Route::post('/time-entries/import', [TimeEntryController::class, 'importStore'])->name('time-entries.import.store');
 
+Route::resource('establishments', EstablishmentController::class);
 Route::resource('collaborators', CollaboratorController::class);
 Route::resource('time-entries', TimeEntryController::class);

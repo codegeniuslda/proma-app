@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
+use App\Models\Establishment;
 use Illuminate\Http\Request;
 
 class CollaboratorController extends Controller
 {
     public function index()
     {
-        $collaborators = Collaborator::orderBy('name')->paginate(10);
+        $collaborators = Collaborator::with('establishmentRelation')->orderBy('name')->paginate(25);
 
         return view('collaborators.index', compact('collaborators'));
     }
 
     public function create()
     {
-        return view('collaborators.create');
+        $establishments = Establishment::orderBy('name')->get();
+
+        return view('collaborators.create', compact('establishments'));
     }
 
     public function store(Request $request)
@@ -24,8 +27,11 @@ class CollaboratorController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'workload_hours' => ['required', 'numeric', 'min:0'],
-            'establishment' => ['required', 'string', 'max:255'],
+            'establishment_id' => ['required', 'exists:establishments,id'],
         ]);
+
+        $establishment = Establishment::findOrFail($validated['establishment_id']);
+        $validated['establishment'] = $establishment->name;
 
         Collaborator::create($validated);
 
@@ -39,7 +45,9 @@ class CollaboratorController extends Controller
 
     public function edit(Collaborator $collaborator)
     {
-        return view('collaborators.edit', compact('collaborator'));
+        $establishments = Establishment::orderBy('name')->get();
+
+        return view('collaborators.edit', compact('collaborator', 'establishments'));
     }
 
     public function update(Request $request, Collaborator $collaborator)
@@ -47,8 +55,11 @@ class CollaboratorController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'workload_hours' => ['required', 'numeric', 'min:0'],
-            'establishment' => ['required', 'string', 'max:255'],
+            'establishment_id' => ['required', 'exists:establishments,id'],
         ]);
+
+        $establishment = Establishment::findOrFail($validated['establishment_id']);
+        $validated['establishment'] = $establishment->name;
 
         $collaborator->update($validated);
 
