@@ -39,6 +39,18 @@ class DashboardController extends Controller
             $statsQuery->whereDate('date', '<=', $to->toDateString());
         }
 
+        if ($request->filled('collaborator_id')) {
+            $statsQuery->where('collaborator_id', $request->input('collaborator_id'));
+        }
+
+        if ($request->filled('presence')) {
+            $statsQuery->where('presence', $request->input('presence'));
+        }
+
+        if ($request->filled('establishment_state')) {
+            $statsQuery->where('establishment_state', $request->input('establishment_state'));
+        }
+
         $entries = $statsQuery->get();
 
         $collaborators = Collaborator::orderBy('name')->get()->map(function ($collaborator) use ($entries) {
@@ -52,9 +64,28 @@ class DashboardController extends Controller
             ];
         });
 
-        $establishmentStatuses = Establishment::with('collaborators')->orderBy('name')->get()->map(function ($establishment) {
+        $establishmentStatuses = Establishment::with('collaborators')->orderBy('name')->get()->map(function ($establishment) use ($request, $from, $to) {
             $collaboratorIds = $establishment->collaborators->pluck('id');
-            $lastEntry = TimeEntry::whereIn('collaborator_id', $collaboratorIds)
+
+            $lastEntryQuery = TimeEntry::whereIn('collaborator_id', $collaboratorIds);
+
+            if ($from) {
+                $lastEntryQuery->whereDate('date', '>=', $from->toDateString());
+            }
+            if ($to) {
+                $lastEntryQuery->whereDate('date', '<=', $to->toDateString());
+            }
+            if ($request->filled('collaborator_id')) {
+                $lastEntryQuery->where('collaborator_id', $request->input('collaborator_id'));
+            }
+            if ($request->filled('presence')) {
+                $lastEntryQuery->where('presence', $request->input('presence'));
+            }
+            if ($request->filled('establishment_state')) {
+                $lastEntryQuery->where('establishment_state', $request->input('establishment_state'));
+            }
+
+            $lastEntry = $lastEntryQuery
                 ->orderByDesc('date')
                 ->orderByDesc('id')
                 ->first();
@@ -71,6 +102,10 @@ class DashboardController extends Controller
             'to' => $to ? $to->toDateString() : $request->input('date_to'),
             'collaboratorStats' => $collaborators,
             'establishmentStatuses' => $establishmentStatuses,
+            'collaboratorOptions' => Collaborator::orderBy('name')->get(),
+            'presenceFilter' => $request->input('presence'),
+            'establishmentStateFilter' => $request->input('establishment_state'),
+            'collaboratorFilter' => $request->input('collaborator_id'),
         ]);
     }
 }

@@ -55,6 +55,7 @@ class TimeEntryController extends Controller
             'entry_time' => ['nullable', 'date_format:H:i'],
             'exit_time' => ['nullable', 'date_format:H:i'],
             'presence' => ['required', 'in:Presente,Nao Presente'],
+            'establishment_state' => ['nullable', 'in:Aberto,Fechado,Parcialmente'],
             'description' => ['nullable', 'string'],
             'description_status' => ['nullable', 'in:critico,razoavel,bom'],
         ]);
@@ -86,6 +87,7 @@ class TimeEntryController extends Controller
             'entry_time' => ['nullable', 'date_format:H:i'],
             'exit_time' => ['nullable', 'date_format:H:i'],
             'presence' => ['required', 'in:Presente,Nao Presente'],
+            'establishment_state' => ['nullable', 'in:Aberto,Fechado,Parcialmente'],
             'description' => ['nullable', 'string'],
             'description_status' => ['nullable', 'in:critico,razoavel,bom'],
         ]);

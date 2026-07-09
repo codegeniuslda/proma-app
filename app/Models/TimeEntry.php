@@ -17,6 +17,7 @@ class TimeEntry extends Model
         'entry_time',
         'exit_time',
         'presence',
+        'establishment_state',
         'description',
         'description_status',
     ];

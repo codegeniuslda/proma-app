@@ -24,7 +24,38 @@
             <input type="date" id="date_to" name="date_to" value="{{ $to }}">
         </div>
         <div>
+            <label for="collaborator_id">Colaborador (opcional)</label>
+            <select name="collaborator_id" id="collaborator_id">
+                <option value="">Todos</option>
+                @foreach($collaboratorOptions as $collaborator)
+                <option value="{{ $collaborator->id }}" @selected((string) $collaboratorFilter===(string)
+                    $collaborator->id)>
+                    {{ $collaborator->name }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+        <div>
+            <label for="presence">Presença (opcional)</label>
+            <select name="presence" id="presence">
+                <option value="">Todas</option>
+                <option value="Presente" @selected($presenceFilter==='Presente' )>Presente</option>
+                <option value="Nao Presente" @selected($presenceFilter==='Nao Presente' )>Nao Presente</option>
+            </select>
+        </div>
+        <div>
+            <label for="establishment_state">Estado Estabelecimento (opcional)</label>
+            <select name="establishment_state" id="establishment_state">
+                <option value="">Todos</option>
+                <option value="Aberto" @selected($establishmentStateFilter==='Aberto' )>Aberto</option>
+                <option value="Fechado" @selected($establishmentStateFilter==='Fechado' )>Fechado</option>
+                <option value="Parcialmente" @selected($establishmentStateFilter==='Parcialmente' )>Parcialmente
+                </option>
+            </select>
+        </div>
+        <div class="actions" style="align-self:end;">
             <button type="submit" class="btn btn-primary">Aplicar</button>
+            <a href="{{ route('dashboard') }}" class="btn btn-secondary">Limpar</a>
         </div>
     </form>
 </div>
@@ -64,6 +95,7 @@
                 <th>Data</th>
                 <th>Presença</th>
                 <th>Status Descrição</th>
+                <th>Estado Estabelecimento</th>
                 <th>Descrição</th>
             </tr>
         </thead>
@@ -75,14 +107,15 @@
                 <td>{{ \Illuminate\Support\Carbon::parse($item['last_entry']->date)->format('d/m/Y') }}</td>
                 <td>{{ $item['last_entry']->presence }}</td>
                 <td>{{ $item['last_entry']->description_status ?? '-' }}</td>
+                <td>{{ $item['last_entry']->establishment_state ?? '-' }}</td>
                 <td>{{ $item['last_entry']->description }}</td>
                 @else
-                <td colspan="4">Sem registros</td>
+                <td colspan="5">Sem registros</td>
                 @endif
             </tr>
             @empty
             <tr>
-                <td colspan="5">Nenhum estabelecimento cadastrado.</td>
+                <td colspan="6">Nenhum estabelecimento cadastrado.</td>
             </tr>
             @endforelse
         </tbody>

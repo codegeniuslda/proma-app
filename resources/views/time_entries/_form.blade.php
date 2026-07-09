@@ -59,6 +59,19 @@
 </div>
 
 <div class="mb-16">
+    <label for="establishment_state">Estado do Estabelecimento</label>
+    <select id="establishment_state" name="establishment_state">
+        <option value="">Selecione</option>
+        <option value="Aberto" @selected(old('establishment_state', $timeEntry->establishment_state ?? '') ==
+            'Aberto')>Aberto</option>
+        <option value="Fechado" @selected(old('establishment_state', $timeEntry->establishment_state ?? '') ==
+            'Fechado')>Fechado</option>
+        <option value="Parcialmente" @selected(old('establishment_state', $timeEntry->establishment_state ?? '') ==
+            'Parcialmente')>Parcialmente</option>
+    </select>
+</div>
+
+<div class="mb-16">
     <label for="description">Descrição (estado do equipamento / eventos)</label>
     <textarea id="description" name="description">{{ old('description', $timeEntry->description ?? '') }}</textarea>
 </div>
