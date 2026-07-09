@@ -10,11 +10,26 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TimeEntryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $timeEntries = TimeEntry::with('collaborator')->latest()->paginate(10);
+        $query = TimeEntry::with('collaborator');
 
-        return view('time_entries.index', compact('timeEntries'));
+        if ($request->filled('collaborator_id')) {
+            $query->where('collaborator_id', $request->input('collaborator_id'));
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('date', '>=', $request->input('date_from'));
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('date', '<=', $request->input('date_to'));
+        }
+
+        $timeEntries = $query->latest()->paginate(10)->withQueryString();
+        $collaborators = Collaborator::orderBy('name')->get();
+
+        return view('time_entries.index', compact('timeEntries', 'collaborators'));
     }
 
     public function create()
@@ -35,6 +50,7 @@ class TimeEntryController extends Controller
             'exit_time' => ['nullable', 'date_format:H:i'],
             'presence' => ['required', 'in:Presente,Nao Presente'],
             'description' => ['nullable', 'string'],
+            'description_status' => ['nullable', 'in:critico,razoavel,bom'],
         ]);
 
         TimeEntry::create($validated);
@@ -65,6 +81,7 @@ class TimeEntryController extends Controller
             'exit_time' => ['nullable', 'date_format:H:i'],
             'presence' => ['required', 'in:Presente,Nao Presente'],
             'description' => ['nullable', 'string'],
+            'description_status' => ['nullable', 'in:critico,razoavel,bom'],
         ]);
 
         $timeEntry->update($validated);

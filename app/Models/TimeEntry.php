@@ -18,6 +18,7 @@ class TimeEntry extends Model
         'exit_time',
         'presence',
         'description',
+        'description_status',
     ];
 
     protected $casts = [

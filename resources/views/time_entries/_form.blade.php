@@ -63,6 +63,19 @@
     <textarea id="description" name="description">{{ old('description', $timeEntry->description ?? '') }}</textarea>
 </div>
 
+<div class="mb-16">
+    <label for="description_status">Estado da Descrição</label>
+    <select id="description_status" name="description_status">
+        <option value="">Selecione o estado</option>
+        <option value="critico" @selected(old('description_status', $timeEntry->description_status ?? '') ==
+            'critico')>Crítico</option>
+        <option value="razoavel" @selected(old('description_status', $timeEntry->description_status ?? '') ==
+            'razoavel')>Razoável</option>
+        <option value="bom" @selected(old('description_status', $timeEntry->description_status ?? '') == 'bom')>Bom
+        </option>
+    </select>
+</div>
+
 <div class="actions">
     <button class="btn btn-primary" type="submit">Salvar</button>
     <a class="btn btn-secondary" href="{{ route('time-entries.index') }}">Voltar</a>

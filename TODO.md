@@ -12,3 +12,4 @@
 - [ ] Update `.env` DB name to `promaDb`
 - [ ] Run migrations
 - [ ] Validate routes and basic app checks
+- [ ] Add filters on time entries list (date range and collaborator)
