@@ -14,7 +14,7 @@
         </div>
 
         <div class="actions">
-            <button class="btn btn-primary" type="submit">Importar</button>
+            <!-- <button class="btn btn-primary" type="submit">Importar</button> -->
             <a class="btn btn-secondary" href="{{ route('time-entries.index') }}">Voltar</a>
         </div>
     </form>
