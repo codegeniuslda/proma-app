@@ -12,6 +12,9 @@
 - [ ] Update `.env` DB name to `promaDb`
 - [ ] Run migrations
 - [ ] Validate routes and basic app checks
+- [ ] Add Excel export for time entries with optional filters
+- [ ] Add include/exclude filters for presence and establishment state
+- [ ] Add period filter modes (all/day/week/month/custom) for export
 - [ ] Add filters on time entries list (date range and collaborator)
 - [ ] Add establishment operational state (Aberto/Fechado/Parcialmente) to time entries
 - [ ] Add dashboard optional filters (collaborator, presence, establishment state)

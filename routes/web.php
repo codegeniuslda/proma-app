@@ -21,6 +21,7 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/time-entries/import', [TimeEntryController::class, 'importForm'])->name('time-entries.import.form');
 Route::post('/time-entries/import', [TimeEntryController::class, 'importStore'])->name('time-entries.import.store');
+Route::get('/time-entries/export', [TimeEntryController::class, 'export'])->name('time-entries.export');
 
 Route::resource('establishments', EstablishmentController::class);
 Route::resource('collaborators', CollaboratorController::class);

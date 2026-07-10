@@ -96,6 +96,15 @@
             } elseif ($entry->description_status === 'bom') {
             $descriptionStyle .= 'background-color:#dcfce7;color:#166534;font-weight:600;';
             }
+
+            $establishmentStateStyle = '';
+            if ($entry->establishment_state === 'Aberto') {
+            $establishmentStateStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
+            } elseif ($entry->establishment_state === 'Parcialmente') {
+            $establishmentStateStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
+            } elseif ($entry->establishment_state === 'Fechado') {
+            $establishmentStateStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+            }
             @endphp
             <tr>
                 <td>{{ $entry->date->format('d/m/Y') }}</td>
@@ -105,7 +114,7 @@
                 <td>{{ $entry->entry_time }}</td>
                 <td>{{ $entry->exit_time }}</td>
                 <td style="{{ $presenceStyle }}">{{ $entry->presence }}</td>
-                <td>{{ $entry->establishment_state ?? '-' }}</td>
+                <td style="{{ $establishmentStateStyle }}">{{ $entry->establishment_state ?? '-' }}</td>
                 <td style="{{ $descriptionStyle }}">
                     {{ $entry->description }}
                     @if($entry->description_status)
