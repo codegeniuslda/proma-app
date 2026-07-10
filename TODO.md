@@ -13,7 +13,7 @@
 - [ ] Run migrations
 - [ ] Validate routes and basic app checks
 - [ ] Add filters on time entries list (date range and collaborator)
-- [ ] Add establishment operational state (Aberto/Fechado/Parcialmente) to time entries
+- [x] Add establishment operational state (Aberto/Fechado/Parcialmente) to time entries
 - [ ] Add dashboard optional filters (collaborator, presence, establishment state)
 - [ ] Show establishment operational state in dashboard latest-status table
 
