@@ -12,9 +12,19 @@
 </div>
 
 <div class="mb-16">
-    <label for="establishment">Estabelecimento</label>
-    <input type="text" id="establishment" name="establishment"
-        value="{{ old('establishment', $collaborator->establishment ?? '') }}" required>
+    <label for="establishment_id">Estabelecimento</label>
+    <select id="establishment_id" name="establishment_id" required>
+        <option value="">Selecione...</option>
+        @foreach($establishments as $establishment)
+        <option value="{{ $establishment->id }}" @selected((string) old('establishment_id', $collaborator->
+            establishment_id ?? '') === (string) $establishment->id)>
+            {{ $establishment->name }}
+        </option>
+        @endforeach
+    </select>
+    @error('establishment_id')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
 </div>
 
 <div class="actions">

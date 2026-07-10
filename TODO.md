@@ -20,5 +20,5 @@
 ## Task: Colaboradores - estabelecimento como select
 
 - [x] Revisar controller e form atuais
-- [ ] Alterar campo estabelecimento para select (`establishment_id`)
-- [ ] Validar persistência com `old()` e edição
+- [x] Alterar campo estabelecimento para select (`establishment_id`)
+- [x] Validar persistência com `old()` e edição
