@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $period = $request->input('period', 'today');
+        $period = $request->input('period', 'custom');
 
         $from = null;
         $to = null;
