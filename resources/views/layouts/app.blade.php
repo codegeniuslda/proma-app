@@ -16,12 +16,15 @@
     nav {
         background: #111827;
         padding: 12px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        align-items: center;
     }
 
     nav a {
         color: #fff;
         text-decoration: none;
-        margin-right: 16px;
         font-weight: 600;
     }
 
@@ -138,7 +141,56 @@
     .actions {
         display: flex;
         gap: 8px;
+        flex-wrap: wrap;
     }
+
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table-wrap table {
+        min-width: 760px;
+    }
+
+    @media (max-width: 1024px) {
+        .container {
+            max-width: 100%;
+            padding: 0 14px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 640px) {
+        nav {
+            padding: 10px 12px;
+            gap: 8px 12px;
+        }
+
+        .container {
+            margin: 14px auto;
+            padding: 0 10px;
+        }
+
+        .card {
+            padding: 12px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        .btn {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .table-wrap table {
     </style>
 </head>
 

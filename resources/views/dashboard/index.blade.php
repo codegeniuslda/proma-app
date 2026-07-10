@@ -68,93 +68,95 @@
 
 <div class="card mb-16">
     <h2 class="mb-16">Presenças e Ausências por Colaborador</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Colaborador</th>
-                <th>Presenças</th>
-                <th>Ausências</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($collaboratorStats as $stat)
-            <tr>
-                <td>{{ $stat['name'] }}</td>
-                <td>{{ $stat['present'] }}</td>
-                <td>{{ $stat['absent'] }}</td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="3">Sem dados no período selecionado.</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Colaborador</th>
+                    <th>Presenças</th>
+                    <th>Ausências</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($collaboratorStats as $stat)
+                <tr>
+                    <td>{{ $stat['name'] }}</td>
+                    <td>{{ $stat['present'] }}</td>
+                    <td>{{ $stat['absent'] }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3">Sem dados no período selecionado.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="card">
     <h2 class="mb-16">Último Estado por Estabelecimento</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Estabelecimento</th>
-                <th>Data</th>
-                <th>Presença</th>
-                <th>Status Descrição</th>
-                <th>Estado Estabelecimento</th>
-                <th>Descrição</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($establishmentStatuses as $item)
-            @php
-            $presenceStyle = '';
-            if ($item['last_entry']) {
-            $presenceStyle = $item['last_entry']->presence === 'Presente'
-            ? 'background-color:#dcfce7;color:#166534;font-weight:600;'
-            : 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            }
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Estabelecimento</th>
+                    <th>Data</th>
+                    <th>Presença</th>
+                    <th>Status Descrição</th>
+                    <th>Estado Estabelecimento</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($establishmentStatuses as $item)
+                @php
+                $presenceStyle = '';
+                if ($item['last_entry']) {
+                $presenceStyle = $item['last_entry']->presence === 'Presente'
+                ? 'background-color:#dcfce7;color:#166534;font-weight:600;'
+                : 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+                }
 
-            $descriptionStatusStyle = '';
-            if ($item['last_entry']) {
-            if ($item['last_entry']->description_status === 'critico') {
-            $descriptionStatusStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            } elseif ($item['last_entry']->description_status === 'razoavel') {
-            $descriptionStatusStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-            } elseif ($item['last_entry']->description_status === 'bom') {
-            $descriptionStatusStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
-            }
-            }
+                $descriptionStatusStyle = '';
+                if ($item['last_entry']) {
+                if ($item['last_entry']->description_status === 'critico') {
+                $descriptionStatusStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+                } elseif ($item['last_entry']->description_status === 'razoavel') {
+                $descriptionStatusStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
+                } elseif ($item['last_entry']->description_status === 'bom') {
+                $descriptionStatusStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
+                }
+                }
 
-            $establishmentStateStyle = '';
-            if ($item['last_entry']) {
-            if ($item['last_entry']->establishment_state === 'Aberto') {
-            $establishmentStateStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
-            } elseif ($item['last_entry']->establishment_state === 'Parcialmente') {
-            $establishmentStateStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-            } elseif ($item['last_entry']->establishment_state === 'Fechado') {
-            $establishmentStateStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            }
-            }
-            @endphp
-            <tr>
-                <td>{{ $item['name'] }}</td>
-                @if($item['last_entry'])
-                <td>{{ \Illuminate\Support\Carbon::parse($item['last_entry']->date)->format('d/m/Y') }}</td>
-                <td style="{{ $presenceStyle }}">{{ $item['last_entry']->presence }}</td>
-                <td style="{{ $descriptionStatusStyle }}">{{ $item['last_entry']->description_status ?? '-' }}</td>
-                <td style="{{ $establishmentStateStyle }}">{{ $item['last_entry']->establishment_state ?? '-' }}</td>
-                <td style="white-space:pre-wrap;">{{ $item['last_entry']->description }}</td>
-                @else
-                <td colspan="5">Sem registros</td>
-                @endif
-            </tr>
-            @empty
-            <tr>
-                <td colspan="6">Nenhum estabelecimento cadastrado.</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
-@endsection
+                $establishmentStateStyle = '';
+                if ($item['last_entry']) {
+                if ($item['last_entry']->establishment_state === 'Aberto') {
+                $establishmentStateStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
+                } elseif ($item['last_entry']->establishment_state === 'Parcialmente') {
+                $establishmentStateStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
+                } elseif ($item['last_entry']->establishment_state === 'Fechado') {
+                $establishmentStateStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+                }
+                }
+                @endphp
+                <tr>
+                    <td>{{ $item['name'] }}</td>
+                    @if($item['last_entry'])
+                    <td>{{ \Illuminate\Support\Carbon::parse($item['last_entry']->date)->format('d/m/Y') }}</td>
+                    <td style="{{ $presenceStyle }}">{{ $item['last_entry']->presence }}</td>
+                    <td style="{{ $descriptionStatusStyle }}">{{ $item['last_entry']->description_status ?? '-' }}</td>
+                    <td style="{{ $establishmentStateStyle }}">{{ $item['last_entry']->establishment_state ?? '-' }}
+                    </td>
+                    <td style="white-space:pre-wrap;">{{ $item['last_entry']->description }}</td>
+                    @else
+                    <td colspan="5">Sem registros</td>
+                    @endif
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6">Nenhum estabelecimento cadastrado.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
