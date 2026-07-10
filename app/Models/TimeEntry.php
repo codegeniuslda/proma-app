@@ -13,7 +13,6 @@ class TimeEntry extends Model
         'date',
         'collaborator_id',
         'establishment',
-        'workload_hours',
         'entry_time',
         'exit_time',
         'presence',

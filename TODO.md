@@ -1,2 +1,9 @@
-- [x] Atualizar README.md com versão do Laravel e instruções de execução do projeto
-- [x] Revisar conteúdo final
+- [x] Remove `workload_hours` (Carga Horária) field from collaborator form view.
+- [x] Remove `workload_hours` validation from CollaboratorController store/update.
+- [x] Remove `workload_hours` from Collaborator model fillable.
+- [x] Remove Carga Horária column from collaborators index table.
+- [x] Update this TODO progress as steps are completed.
+- [x] Remove `workload_hours` field from `resources/views/time_entries/_form.blade.php` and related JS/data attributes.
+- [x] Remove `workload_hours` validation from `app/Http/Controllers/TimeEntryController.php` (store/update).
+- [x] Remove `workload_hours` from `app/Models/TimeEntry.php` fillable.
+- [x] Remove Carga Horária display from `resources/views/time_entries/index.blade.php` if present.
