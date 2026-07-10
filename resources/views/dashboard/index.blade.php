@@ -8,10 +8,10 @@
         <div>
             <label for="period">Período</label>
             <select name="period" id="period">
-                <option value="custom" {{ $period === 'custom' ? 'selected' : '' }}>Personalizado</option>
                 <option value="today" {{ $period === 'today' ? 'selected' : '' }}>Hoje</option>
                 <option value="week" {{ $period === 'week' ? 'selected' : '' }}>Semana</option>
                 <option value="month" {{ $period === 'month' ? 'selected' : '' }}>Mês</option>
+                <option value="custom" {{ $period === 'custom' ? 'selected' : '' }}>Personalizado</option>
             </select>
         </div>
         <div></div>
