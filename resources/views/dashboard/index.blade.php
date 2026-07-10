@@ -101,44 +101,14 @@
         </thead>
         <tbody>
             @forelse ($establishmentStatuses as $item)
-            @php
-            $presenceStyle = '';
-            if ($item['last_entry']) {
-            $presenceStyle = $item['last_entry']->presence === 'Presente'
-            ? 'background-color:#dcfce7;color:#166534;font-weight:600;'
-            : 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            }
-
-            $descriptionStatusStyle = '';
-            if ($item['last_entry']) {
-            if ($item['last_entry']->description_status === 'critico') {
-            $descriptionStatusStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            } elseif ($item['last_entry']->description_status === 'razoavel') {
-            $descriptionStatusStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-            } elseif ($item['last_entry']->description_status === 'bom') {
-            $descriptionStatusStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
-            }
-            }
-
-            $establishmentStateStyle = '';
-            if ($item['last_entry']) {
-            if ($item['last_entry']->establishment_state === 'Aberto') {
-            $establishmentStateStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
-            } elseif ($item['last_entry']->establishment_state === 'Parcialmente') {
-            $establishmentStateStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-            } elseif ($item['last_entry']->establishment_state === 'Fechado') {
-            $establishmentStateStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            }
-            }
-            @endphp
             <tr>
                 <td>{{ $item['name'] }}</td>
                 @if($item['last_entry'])
                 <td>{{ \Illuminate\Support\Carbon::parse($item['last_entry']->date)->format('d/m/Y') }}</td>
-                <td style="{{ $presenceStyle }}">{{ $item['last_entry']->presence }}</td>
-                <td style="{{ $descriptionStatusStyle }}">{{ $item['last_entry']->description_status ?? '-' }}</td>
-                <td style="{{ $establishmentStateStyle }}">{{ $item['last_entry']->establishment_state ?? '-' }}</td>
-                <td style="white-space:pre-wrap;">{{ $item['last_entry']->description }}</td>
+                <td>{{ $item['last_entry']->presence }}</td>
+                <td>{{ $item['last_entry']->description_status ?? '-' }}</td>
+                <td>{{ $item['last_entry']->establishment_state ?? '-' }}</td>
+                <td>{{ $item['last_entry']->description }}</td>
                 @else
                 <td colspan="5">Sem registros</td>
                 @endif
