@@ -1,24 +1,9 @@
-# TODO - ProMa Time Entry & Excel Module
+# TODO Progress
 
-- [x] Install Excel package (maatwebsite/excel)
-- [ ] Create migrations for collaborators and time_entries
-- [ ] Create models (Collaborator, TimeEntry) with relationships
-- [ ] Create controllers (CollaboratorController, TimeEntryController)
-- [ ] Create Excel import class (TimeEntriesImport)
-- [ ] Update web routes
-- [ ] Create Blade layout and CRUD views for collaborators
-- [ ] Create Blade CRUD + import views for time entries
-- [ ] Add JS auto-fill (Estabelecimento, Carga Horaria) from selected collaborator
-- [ ] Update `.env` DB name to `promaDb`
-- [ ] Run migrations
-- [ ] Validate routes and basic app checks
-- [ ] Add filters on time entries list (date range and collaborator)
-- [x] Add establishment operational state (Aberto/Fechado/Parcialmente) to time entries
-- [ ] Add dashboard optional filters (collaborator, presence, establishment state)
-- [ ] Show establishment operational state in dashboard latest-status table
-
-## Task: Colaboradores - estabelecimento como select
-
-- [x] Revisar controller e form atuais
-- [x] Alterar campo estabelecimento para select (`establishment_id`)
-- [x] Validar persistência com `old()` e edição
+- [ ] Add users role migration (`admin`/`user`)
+- [ ] Update `User` model with `role`
+- [ ] Seed default users (`admin` / `Manager`)
+- [ ] Protect app routes with authentication
+- [ ] Disable public registration and password recovery
+- [ ] Restrict user creation to admin-only
+- [ ] Run validation checks (routes/migrations overview)

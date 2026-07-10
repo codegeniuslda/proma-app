@@ -2,7 +2,13 @@
 
 @section('content')
 <div class="card mb-16">
-    <h1 class="mb-16">Dashboard</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;" class="mb-16">
+        <h1 style="margin:0;">Dashboard</h1>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-secondary">Logout</button>
+        </form>
+    </div>
 
     <form method="GET" action="{{ route('dashboard') }}" class="grid grid-2 mb-16">
         <div>
