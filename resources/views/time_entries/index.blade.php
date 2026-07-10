@@ -25,46 +25,6 @@
             </div>
 
             <div>
-                <label for="establishment">Estabelecimento</label>
-                <input type="text" id="establishment" name="establishment" value="{{ request('establishment') }}">
-            </div>
-
-            <div>
-                <label for="description_status">Estado Descrição</label>
-                <select id="description_status" name="description_status">
-                    <option value="">Todos</option>
-                    <option value="critico" @selected(request('description_status')==='critico' )>Crítico</option>
-                    <option value="razoavel" @selected(request('description_status')==='razoavel' )>Razoável</option>
-                    <option value="bom" @selected(request('description_status')==='bom' )>Bom</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="per_page">Mostrar</label>
-                <select id="per_page" name="per_page">
-                    <option value="25" @selected((int) request('per_page', 25)===25)>25</option>
-                    <option value="50" @selected((int) request('per_page')===50)>50</option>
-                    <option value="100" @selected((int) request('per_page')===100)>100</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="period">Período</label>
-                <select id="period" name="period">
-                    <option value="all" @selected(request('period', 'all' )==='all' )>Todos</option>
-                    <option value="day" @selected(request('period')==='day' )>Dia</option>
-                    <option value="week" @selected(request('period')==='week' )>Semana</option>
-                    <option value="month" @selected(request('period')==='month' )>Mês</option>
-                    <option value="custom" @selected(request('period')==='custom' )>Personalizado</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="date">Data Referência</label>
-                <input type="date" id="date" name="date" value="{{ request('date') }}">
-            </div>
-
-            <div>
                 <label for="date_from">Data Inicial</label>
                 <input type="date" id="date_from" name="date_from" value="{{ request('date_from') }}">
             </div>
@@ -75,42 +35,11 @@
             </div>
 
             <div>
-                <label for="presence_mode">Presença (modo)</label>
-                <select id="presence_mode" name="presence_mode">
-                    <option value="include" @selected(request('presence_mode', 'include' )==='include' )>Incluir
-                    </option>
-                    <option value="exclude" @selected(request('presence_mode')==='exclude' )>Excluir</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="presences">Presenças</label>
-                <select id="presences" name="presences[]" multiple size="2">
-                    <option value="Presente" @selected(in_array('Presente', (array) request('presences', []), true))>
-                        Presente</option>
-                    <option value="Nao Presente" @selected(in_array('Nao Presente', (array) request('presences', []),
-                        true))>Não Presente</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="establishment_state_mode">Estado Estab. (modo)</label>
-                <select id="establishment_state_mode" name="establishment_state_mode">
-                    <option value="include" @selected(request('establishment_state_mode', 'include' )==='include' )>
-                        Incluir</option>
-                    <option value="exclude" @selected(request('establishment_state_mode')==='exclude' )>Excluir</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="establishment_states">Estados Estabelecimento</label>
-                <select id="establishment_states" name="establishment_states[]" multiple size="3">
-                    <option value="Aberto" @selected(in_array('Aberto', (array) request('establishment_states', []),
-                        true))>Aberto</option>
-                    <option value="Parcialmente" @selected(in_array('Parcialmente', (array)
-                        request('establishment_states', []), true))>Parcialmente</option>
-                    <option value="Fechado" @selected(in_array('Fechado', (array) request('establishment_states', []),
-                        true))>Fechado</option>
+                <label for="per_page">Mostrar</label>
+                <select id="per_page" name="per_page">
+                    <option value="25" @selected((int) request('per_page', 25)===25)>25</option>
+                    <option value="50" @selected((int) request('per_page')===50)>50</option>
+                    <option value="100" @selected((int) request('per_page')===100)>100</option>
                 </select>
             </div>
         </div>
@@ -118,8 +47,6 @@
         <div class="actions" style="margin-top:12px;">
             <button type="submit" class="btn btn-primary">Filtrar</button>
             <a href="{{ route('time-entries.index') }}" class="btn btn-secondary">Limpar</a>
-            <a href="{{ route('time-entries.export', request()->query()) }}" class="btn btn-secondary">Exportar
-                Excel</a>
         </div>
     </form>
 
