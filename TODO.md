@@ -16,3 +16,9 @@
 - [ ] Add establishment operational state (Aberto/Fechado/Parcialmente) to time entries
 - [ ] Add dashboard optional filters (collaborator, presence, establishment state)
 - [ ] Show establishment operational state in dashboard latest-status table
+
+## Task: Colaboradores - estabelecimento como select
+
+- [x] Revisar controller e form atuais
+- [ ] Alterar campo estabelecimento para select (`establishment_id`)
+- [ ] Validar persistência com `old()` e edição
