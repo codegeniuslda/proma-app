@@ -2,13 +2,9 @@
 
 @section('content')
 <div class="card">
-    <h1>Importar/Exportar Excel</h1>
+    <h1>Importar Registros via Excel</h1>
     <p>Formato esperado das colunas: <strong>Data, Carga Horaria, Estabelecimento, Colaborador, Entrada, Saida,
             Presenca, Descricao</strong></p>
-
-    <div class="mb-16">
-        <a class="btn btn-secondary" href="{{ route('time-entries.export', request()->query()) }}">Exportar Excel</a>
-    </div>
 
     <form action="{{ route('time-entries.import.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
