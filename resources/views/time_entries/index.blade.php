@@ -72,7 +72,6 @@
                 <th>Data</th>
                 <th>Colaborador</th>
                 <th>Estabelecimento</th>
-                <th>Carga Horária</th>
                 <th>Entrada</th>
                 <th>Saída</th>
                 <th>Presença</th>
@@ -110,7 +109,6 @@
                 <td>{{ $entry->date->format('d/m/Y') }}</td>
                 <td>{{ $entry->collaborator->name ?? '-' }}</td>
                 <td>{{ $entry->establishment }}</td>
-                <td>{{ $entry->workload_hours }}</td>
                 <td>{{ $entry->entry_time }}</td>
                 <td>{{ $entry->exit_time }}</td>
                 <td style="{{ $presenceStyle }}">{{ $entry->presence }}</td>
