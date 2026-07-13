@@ -7,3 +7,4 @@
 - [x] Remove `workload_hours` validation from `app/Http/Controllers/TimeEntryController.php` (store/update).
 - [x] Remove `workload_hours` from `app/Models/TimeEntry.php` fillable.
 - [x] Remove Carga Horária display from `resources/views/time_entries/index.blade.php` if present.
+- [x] Remove `workload_hours` from DB (`time_entries` table) via migration.
