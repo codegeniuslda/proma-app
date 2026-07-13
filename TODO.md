@@ -1,2 +1,4 @@
 - [x] Atualizar README.md com versão do Laravel e instruções de execução do projeto
 - [x] Revisar conteúdo final
+- [ ] Add optional establishment filter on dashboard (controller + view)
+- [ ] Clear view cache after dashboard view update

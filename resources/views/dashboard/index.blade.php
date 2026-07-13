@@ -50,6 +50,17 @@
             </select>
         </div>
         <div>
+            <label for="establishment">Estabelecimento (opcional)</label>
+            <select name="establishment" id="establishment">
+                <option value="">Todos</option>
+                @foreach($establishmentOptions as $establishment)
+                <option value="{{ $establishment }}" @selected((string) $establishmentFilter===(string) $establishment)>
+                    {{ $establishment }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+        <div>
             <label for="establishment_state">Estado Estabelecimento (opcional)</label>
             <select name="establishment_state" id="establishment_state">
                 <option value="">Todos</option>

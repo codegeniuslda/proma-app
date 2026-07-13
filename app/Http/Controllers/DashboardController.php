@@ -51,6 +51,10 @@ class DashboardController extends Controller
             $statsQuery->where('establishment_state', $request->input('establishment_state'));
         }
 
+        if ($request->filled('establishment')) {
+            $statsQuery->where('establishment', $request->input('establishment'));
+        }
+
         $entries = $statsQuery->get();
 
         $collaborators = Collaborator::orderBy('name')->get()->map(function ($collaborator) use ($entries) {
@@ -84,6 +88,9 @@ class DashboardController extends Controller
             if ($request->filled('establishment_state')) {
                 $lastEntryQuery->where('establishment_state', $request->input('establishment_state'));
             }
+            if ($request->filled('establishment')) {
+                $lastEntryQuery->where('establishment', $request->input('establishment'));
+            }
 
             $lastEntry = $lastEntryQuery
                 ->orderByDesc('date')
@@ -103,9 +110,17 @@ class DashboardController extends Controller
             'collaboratorStats' => $collaborators,
             'establishmentStatuses' => $establishmentStatuses,
             'collaboratorOptions' => Collaborator::orderBy('name')->get(),
+            'establishmentOptions' => TimeEntry::query()
+                ->select('establishment')
+                ->whereNotNull('establishment')
+                ->where('establishment', '!=', '')
+                ->distinct()
+                ->orderBy('establishment')
+                ->pluck('establishment'),
             'presenceFilter' => $request->input('presence'),
             'establishmentStateFilter' => $request->input('establishment_state'),
             'collaboratorFilter' => $request->input('collaborator_id'),
+            'establishmentFilter' => $request->input('establishment'),
         ]);
     }
 }
