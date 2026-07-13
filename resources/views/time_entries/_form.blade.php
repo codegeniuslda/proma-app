@@ -12,9 +12,7 @@
             <option value="">Selecione</option>
             @foreach($collaborators as $collaborator)
             <option value="{{ $collaborator->id }}" data-establishment="{{ $collaborator->establishment }}"
-                data-workload-hours="{{ $collaborator->workload_hours }}" @selected(old('collaborator_id', $timeEntry->
-                collaborator_id ?? '') == $collaborator->id)
-                >
+                @selected(old('collaborator_id', $timeEntry->collaborator_id ?? '') == $collaborator->id)>
                 {{ $collaborator->name }}
             </option>
             @endforeach
@@ -28,24 +26,19 @@
         <input type="text" id="establishment" name="establishment"
             value="{{ old('establishment', $timeEntry->establishment ?? '') }}" required>
     </div>
-
-    <div>
-        <label for="workload_hours">Carga Horária</label>
-        <input type="number" step="0.01" id="workload_hours" name="workload_hours"
-            value="{{ old('workload_hours', $timeEntry->workload_hours ?? '') }}" required>
-    </div>
 </div>
 
 <div class="grid grid-2 mb-16">
     <div>
         <label for="entry_time">Entrada</label>
         <input type="time" id="entry_time" name="entry_time"
-            value="{{ old('entry_time', $timeEntry->entry_time ?? '') }}">
+            value="{{ old('entry_time', isset($timeEntry) && $timeEntry->entry_time ? \Illuminate\Support\Str::of($timeEntry->entry_time)->substr(0, 5) : '') }}">
     </div>
 
     <div>
         <label for="exit_time">Saída</label>
-        <input type="time" id="exit_time" name="exit_time" value="{{ old('exit_time', $timeEntry->exit_time ?? '') }}">
+        <input type="time" id="exit_time" name="exit_time"
+            value="{{ old('exit_time', isset($timeEntry) && $timeEntry->exit_time ? \Illuminate\Support\Str::of($timeEntry->exit_time)->substr(0, 5) : '') }}">
     </div>
 </div>
 
@@ -98,18 +91,16 @@
 (function() {
     const collaboratorSelect = document.getElementById('collaborator_id');
     const establishmentInput = document.getElementById('establishment');
-    const workloadInput = document.getElementById('workload_hours');
 
     function fillFromCollaborator() {
         const selected = collaboratorSelect.options[collaboratorSelect.selectedIndex];
         if (!selected || !selected.value) return;
         establishmentInput.value = selected.dataset.establishment || '';
-        workloadInput.value = selected.dataset.workloadHours || '';
     }
 
     collaboratorSelect.addEventListener('change', fillFromCollaborator);
 
-    if (!establishmentInput.value || !workloadInput.value) {
+    if (!establishmentInput.value) {
         fillFromCollaborator();
     }
 })();

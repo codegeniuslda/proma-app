@@ -3,7 +3,7 @@
 @section('content')
 <div class="card">
     <h1>Importar Registros via Excel</h1>
-    <p>Formato esperado das colunas: <strong>Data, Carga Horaria, Estabelecimento, Colaborador, Entrada, Saida,
+    <p>Formato esperado das colunas: <strong>Data, Estabelecimento, Colaborador, Entrada, Saida,
             Presenca, Descricao</strong></p>
 
     <form action="{{ route('time-entries.import.store') }}" method="POST" enctype="multipart/form-data">
