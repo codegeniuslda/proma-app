@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\TimeEntriesImport;
 use App\Models\Collaborator;
+use App\Models\Establishment;
 use App\Models\TimeEntry;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -41,8 +42,9 @@ class TimeEntryController extends Controller
     public function create()
     {
         $collaborators = Collaborator::orderBy('name')->get();
+        $establishments = Establishment::orderBy('name')->get();
 
-        return view('time_entries.create', compact('collaborators'));
+        return view('time_entries.create', compact('collaborators', 'establishments'));
     }
 
     public function store(Request $request)
@@ -50,8 +52,7 @@ class TimeEntryController extends Controller
         $validated = $request->validate([
             'date' => ['required', 'date'],
             'collaborator_id' => ['required', 'exists:collaborators,id'],
-            'establishment' => ['required', 'string', 'max:255'],
-            'workload_hours' => ['required', 'numeric', 'min:0'],
+            'establishment' => ['required', 'string', 'max:255', 'exists:establishments,name'],
             'entry_time' => ['nullable', 'date_format:H:i'],
             'exit_time' => ['nullable', 'date_format:H:i'],
             'presence' => ['required', 'in:Presente,Nao Presente'],
@@ -73,8 +74,9 @@ class TimeEntryController extends Controller
     public function edit(TimeEntry $timeEntry)
     {
         $collaborators = Collaborator::orderBy('name')->get();
+        $establishments = Establishment::orderBy('name')->get();
 
-        return view('time_entries.edit', compact('timeEntry', 'collaborators'));
+        return view('time_entries.edit', compact('timeEntry', 'collaborators', 'establishments'));
     }
 
     public function update(Request $request, TimeEntry $timeEntry)
@@ -82,8 +84,7 @@ class TimeEntryController extends Controller
         $validated = $request->validate([
             'date' => ['required', 'date'],
             'collaborator_id' => ['required', 'exists:collaborators,id'],
-            'establishment' => ['required', 'string', 'max:255'],
-            'workload_hours' => ['required', 'numeric', 'min:0'],
+            'establishment' => ['required', 'string', 'max:255', 'exists:establishments,name'],
             'entry_time' => ['nullable', 'date_format:H:i'],
             'exit_time' => ['nullable', 'date_format:H:i'],
             'presence' => ['required', 'in:Presente,Nao Presente'],
