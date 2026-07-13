@@ -11,7 +11,6 @@
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Carga Horária</th>
                 <th>Estabelecimento</th>
                 <th>Ações</th>
             </tr>
@@ -20,7 +19,6 @@
             @forelse ($collaborators as $collaborator)
             <tr>
                 <td>{{ $collaborator->name }}</td>
-                <td>{{ $collaborator->workload_hours }}</td>
                 <td>{{ $collaborator->establishment }}</td>
                 <td>
                     <div class="actions">
@@ -36,7 +34,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="4">Nenhum colaborador cadastrado.</td>
+                <td colspan="3">Nenhum colaborador cadastrado.</td>
             </tr>
             @endforelse
         </tbody>
