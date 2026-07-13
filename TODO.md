@@ -8,4 +8,3 @@
 - [x] Remove `workload_hours` from `app/Models/TimeEntry.php` fillable.
 - [x] Remove Carga Horária display from `resources/views/time_entries/index.blade.php` if present.
 - [x] Remove `workload_hours` from DB (`time_entries` table) via migration.
-- [x] Fix time format mismatch on time entry edit (`H:i:s` -> `H:i`) in `resources/views/time_entries/_form.blade.php`.

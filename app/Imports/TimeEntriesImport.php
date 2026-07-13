@@ -17,7 +17,7 @@ class TimeEntriesImport implements ToCollection
         }
 
         $header = $rows->first()->map(fn ($value) => trim((string) $value))->toArray();
-        $requiredColumns = ['Data', 'Estabelecimento', 'Colaborador', 'Entrada', 'Saida', 'Presenca', 'Descricao'];
+        $requiredColumns = ['Data', 'Carga Horaria', 'Estabelecimento', 'Colaborador', 'Entrada', 'Saida', 'Presenca', 'Descricao'];
 
         if ($header !== $requiredColumns) {
             $rows = $rows;
@@ -26,17 +26,18 @@ class TimeEntriesImport implements ToCollection
         }
 
         foreach ($rows as $row) {
-            if (count($row) < 7) {
+            if (count($row) < 8) {
                 continue;
             }
 
             $dateRaw = $row[0];
-            $establishment = trim((string) $row[1]);
-            $collaboratorName = trim((string) $row[2]);
-            $entryTime = $row[3] ? substr((string) $row[3], 0, 5) : null;
-            $exitTime = $row[4] ? substr((string) $row[4], 0, 5) : null;
-            $presence = trim((string) $row[5]) === 'Presente' ? 'Presente' : 'Nao Presente';
-            $description = isset($row[6]) ? (string) $row[6] : null;
+            $workloadHours = $row[1];
+            $establishment = trim((string) $row[2]);
+            $collaboratorName = trim((string) $row[3]);
+            $entryTime = $row[4] ? substr((string) $row[4], 0, 5) : null;
+            $exitTime = $row[5] ? substr((string) $row[5], 0, 5) : null;
+            $presence = trim((string) $row[6]) === 'Presente' ? 'Presente' : 'Nao Presente';
+            $description = isset($row[7]) ? (string) $row[7] : null;
 
             if ($collaboratorName === '' || $establishment === '' || $dateRaw === null) {
                 continue;
@@ -55,14 +56,16 @@ class TimeEntriesImport implements ToCollection
                     'name' => $collaboratorName,
                     'establishment' => $establishment,
                 ],
-
+                [
+                    'workload_hours' => is_numeric($workloadHours) ? (float) $workloadHours : 0,
+                ]
             );
 
             TimeEntry::create([
                 'date' => $date,
                 'collaborator_id' => $collaborator->id,
                 'establishment' => $establishment,
-        
+                'workload_hours' => is_numeric($workloadHours) ? (float) $workloadHours : 0,
                 'entry_time' => $entryTime,
                 'exit_time' => $exitTime,
                 'presence' => $presence,
