@@ -5,6 +5,9 @@
     <div style="display:flex;justify-content:space-between;align-items:center;" class="mb-16">
         <h1>Gestão do Estabelecimento</h1>
         <div class="actions">
+            <a class="btn btn-secondary"
+                href="{{ route('sql-export.module', array_merge(['module' => 'establishment-managements'], request()->query())) }}">Exportar
+                PDF (Filtrado)</a>
             <a class="btn btn-primary" href="{{ route('establishment-managements.create') }}">Novo Registro</a>
         </div>
     </div>

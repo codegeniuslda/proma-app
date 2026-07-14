@@ -4,7 +4,12 @@
 <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;" class="mb-16">
         <h1>Colaboradores</h1>
-        <a class="btn btn-primary" href="{{ route('collaborators.create') }}">Novo Colaborador</a>
+        <div class="actions">
+            <a class="btn btn-secondary"
+                href="{{ route('sql-export.module', array_merge(['module' => 'collaborators'], request()->query())) }}">Exportar
+                PDF (Filtrado)</a>
+            <a class="btn btn-primary" href="{{ route('collaborators.create') }}">Novo Colaborador</a>
+        </div>
     </div>
 
     <form method="GET" action="{{ route('collaborators.index') }}" class="card mb-16" style="padding:12px;">

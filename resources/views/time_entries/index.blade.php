@@ -5,6 +5,9 @@
     <div style="display:flex;justify-content:space-between;align-items:center;" class="mb-16">
         <h1>Registros de Ponto</h1>
         <div class="actions">
+            <a class="btn btn-secondary"
+                href="{{ route('sql-export.module', array_merge(['module' => 'time-entries'], request()->query())) }}">Exportar
+                PDF (Filtrado)</a>
             <!-- <a class="btn btn-secondary" href="{{ route('time-entries.import.form') }}">Importar Excel</a> -->
             <a class="btn btn-primary" href="{{ route('time-entries.create') }}">Novo Registro</a>
         </div>

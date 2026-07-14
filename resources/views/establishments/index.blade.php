@@ -4,7 +4,12 @@
 <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;" class="mb-16">
         <h1>Estabelecimentos</h1>
-        <a class="btn btn-primary" href="{{ route('establishments.create') }}">Novo Estabelecimento</a>
+        <div class="actions">
+            <a class="btn btn-secondary"
+                href="{{ route('sql-export.module', array_merge(['module' => 'establishments'], request()->query())) }}">Exportar
+                PDF (Filtrado)</a>
+            <a class="btn btn-primary" href="{{ route('establishments.create') }}">Novo Estabelecimento</a>
+        </div>
     </div>
 
     <table>
