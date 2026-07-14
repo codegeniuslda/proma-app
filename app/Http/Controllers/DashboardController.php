@@ -145,8 +145,9 @@ class DashboardController extends Controller
             });
         }
 
-        $establishmentStatuses = $managementQuery
-            ->get()
+        $managementCollection = $managementQuery->get();
+
+        $establishmentStatuses = $managementCollection
             ->groupBy(function ($management) {
                 return optional(optional($management->collaborator)->establishmentRelation)->name ?? 'Sem estabelecimento';
             })
@@ -157,6 +158,64 @@ class DashboardController extends Controller
                 ];
             })
             ->values();
+
+        $historyQuery = EstablishmentManagement::query()
+            ->with(['collaborator.establishmentRelation', 'closedByCollaborator']);
+
+        if ($request->filled('history_collaborator_id')) {
+            $historyQuery->where('collaborator_id', $request->input('history_collaborator_id'));
+        }
+
+        if ($request->filled('history_establishment_id')) {
+            $historyQuery->whereHas('collaborator', function ($q) use ($request) {
+                $q->where('establishment_id', $request->input('history_establishment_id'));
+            });
+        }
+
+        if ($request->filled('history_date_from')) {
+            $historyQuery->whereDate('date', '>=', $request->input('history_date_from'));
+        }
+
+        if ($request->filled('history_date_to')) {
+            $historyQuery->whereDate('date', '<=', $request->input('history_date_to'));
+        }
+
+        $allowedHistoryPerPage = [25, 50, 100];
+        $historyPerPage = (int) $request->input('history_per_page', 25);
+        if (!in_array($historyPerPage, $allowedHistoryPerPage, true)) {
+            $historyPerPage = 25;
+        }
+
+        $allowedHistorySortBy = [
+            'date',
+            'opened_at',
+            'closed_at',
+            'collaborator_name',
+            'description_status',
+            'establishment_state',
+        ];
+        $historySortBy = $request->input('history_sort_by', 'date');
+        if (!in_array($historySortBy, $allowedHistorySortBy, true)) {
+            $historySortBy = 'date';
+        }
+
+        $historySortDir = strtolower((string) $request->input('history_sort_dir', 'desc'));
+        if (!in_array($historySortDir, ['asc', 'desc'], true)) {
+            $historySortDir = 'desc';
+        }
+
+        if ($historySortBy === 'collaborator_name') {
+            $historyQuery
+                ->leftJoin('collaborators', 'establishment_managements.collaborator_id', '=', 'collaborators.id')
+                ->orderBy('collaborators.name', $historySortDir)
+                ->select('establishment_managements.*');
+        } else {
+            $historyQuery->orderBy($historySortBy, $historySortDir)->orderByDesc('id');
+        }
+
+        $establishmentHistory = $historyQuery
+            ->paginate($historyPerPage, ['*'], 'history_page')
+            ->withQueryString();
 
         return view('dashboard.index', [
             'period' => $period,
@@ -169,7 +228,10 @@ class DashboardController extends Controller
                 'not_marked' => $notMarkedCount,
             ],
             'establishmentStatuses' => $establishmentStatuses,
+            'establishmentHistory' => $establishmentHistory,
             'collaboratorOptions' => Collaborator::orderBy('name')->get(),
+            'historyCollaboratorOptions' => Collaborator::orderBy('name')->get(),
+            'historyEstablishments' => Establishment::orderBy('name')->get(),
             'establishmentOptions' => TimeEntry::query()
                 ->select('establishment')
                 ->whereNotNull('establishment')
@@ -182,6 +244,13 @@ class DashboardController extends Controller
             'establishmentFilter' => $request->input('establishment'),
             'collaboratorsSummary' => $collaboratorsSummary,
             'perPage' => $perPage,
+            'historyPerPage' => $historyPerPage,
+            'historySortBy' => $historySortBy,
+            'historySortDir' => $historySortDir,
+            'historyCollaboratorFilter' => $request->input('history_collaborator_id'),
+            'historyEstablishmentFilter' => $request->input('history_establishment_id'),
+            'historyDateFrom' => $request->input('history_date_from'),
+            'historyDateTo' => $request->input('history_date_to'),
         ]);
     }
 }

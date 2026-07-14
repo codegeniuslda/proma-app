@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EstablishmentController;
 use App\Http\Controllers\EstablishmentManagementController;
 use App\Http\Controllers\TimeEntryController;
+use App\Http\Controllers\SqlExportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::view('/users/create', 'auth.users-create-disabled')->name('users.create');
 
     Route::get('/time-entries/import', [TimeEntryController::class, 'importForm'])->name('time-entries.import.form');
     Route::post('/time-entries/import', [TimeEntryController::class, 'importStore'])->name('time-entries.import.store');
@@ -36,8 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('collaborators', CollaboratorController::class);
     Route::resource('establishment-managements', EstablishmentManagementController::class);
     Route::resource('time-entries', TimeEntryController::class);
-});
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::view('/users/create', 'auth.users-create-disabled')->name('users.create');
+    Route::get('/exportar', [SqlExportController::class, 'index'])->name('sql-export.index');
+    Route::get('/sql-export/full', [SqlExportController::class, 'exportFullBackup'])->name('sql-export.full');
+    Route::get('/sql-export/module/{module}', [SqlExportController::class, 'exportModule'])->name('sql-export.module');
 });

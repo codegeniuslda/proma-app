@@ -158,7 +158,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card mb-16">
     <h2 class="mb-16">Último Estado por Estabelecimento</h2>
     <div class="table-wrap">
         <table>
@@ -229,6 +229,166 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="card">
+    <h2 class="mb-16">Histórico de Estados do Estabelecimento</h2>
+
+    <form method="GET" action="{{ route('dashboard') }}" class="card mb-16" style="padding:12px;">
+        <input type="hidden" name="period" value="{{ $period }}">
+        <input type="hidden" name="date_from" value="{{ $from }}">
+        <input type="hidden" name="date_to" value="{{ $to }}">
+        <input type="hidden" name="collaborator_id" value="{{ $collaboratorFilter }}">
+        <input type="hidden" name="presence" value="{{ $presenceFilter }}">
+        <input type="hidden" name="establishment" value="{{ $establishmentFilter }}">
+        <input type="hidden" name="per_page" value="{{ $perPage }}">
+
+        <div class="grid grid-4">
+            <div>
+                <label for="history_establishment_id">Estabelecimento</label>
+                <select id="history_establishment_id" name="history_establishment_id">
+                    <option value="">Todos</option>
+                    @foreach($historyEstablishments as $establishmentItem)
+                    <option value="{{ $establishmentItem->id }}" @selected((string)
+                        $historyEstablishmentFilter===(string) $establishmentItem->id)>
+                        {{ $establishmentItem->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label for="history_collaborator_id">Colaborador</label>
+                <select id="history_collaborator_id" name="history_collaborator_id">
+                    <option value="">Todos</option>
+                    @foreach($historyCollaboratorOptions as $collaboratorItem)
+                    <option value="{{ $collaboratorItem->id }}" @selected((string) $historyCollaboratorFilter===(string)
+                        $collaboratorItem->id)>
+                        {{ $collaboratorItem->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label for="history_date_from">Data Inicial</label>
+                <input type="date" id="history_date_from" name="history_date_from" value="{{ $historyDateFrom }}">
+            </div>
+
+            <div>
+                <label for="history_date_to">Data Final</label>
+                <input type="date" id="history_date_to" name="history_date_to" value="{{ $historyDateTo }}">
+            </div>
+        </div>
+
+        <div class="grid grid-4" style="margin-top:12px;">
+            <div>
+                <label for="history_sort_by">Ordenar por</label>
+                <select id="history_sort_by" name="history_sort_by">
+                    <option value="date" @selected($historySortBy==='date' )>Data</option>
+                    <option value="opened_at" @selected($historySortBy==='opened_at' )>Hora de Entrada</option>
+                    <option value="closed_at" @selected($historySortBy==='closed_at' )>Hora de Saída</option>
+                    <option value="collaborator_name" @selected($historySortBy==='collaborator_name' )>Nome do
+                        Colaborador</option>
+                    <option value="description_status" @selected($historySortBy==='description_status' )>Estado da
+                        Descrição</option>
+                    <option value="establishment_state" @selected($historySortBy==='establishment_state' )>Estado do
+                        Estabelecimento</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="history_sort_dir">Direção</label>
+                <select id="history_sort_dir" name="history_sort_dir">
+                    <option value="asc" @selected($historySortDir==='asc' )>Crescente</option>
+                    <option value="desc" @selected($historySortDir==='desc' )>Decrescente</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="history_per_page">Mostrar</label>
+                <select id="history_per_page" name="history_per_page">
+                    <option value="25" @selected((int) $historyPerPage===25)>25</option>
+                    <option value="50" @selected((int) $historyPerPage===50)>50</option>
+                    <option value="100" @selected((int) $historyPerPage===100)>100</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="actions" style="margin-top:12px;">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="{{ route('dashboard') }}" class="btn btn-secondary">Limpar</a>
+        </div>
+    </form>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Estabelecimento</th>
+                    <th>Data</th>
+                    <th>Estado do Estabelecimento</th>
+                    <th>Estado da Descrição</th>
+                    <th>Descrição</th>
+                    <th>Aberto por / Abertura</th>
+                    <th>Fechado por / Fechamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($establishmentHistory as $history)
+                @php
+                $historyStateStyle = '';
+                $historyDescriptionStyle = '';
+
+                if (($history->establishment_state ?? null) === 'Aberto') {
+                $historyStateStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
+                } elseif (($history->establishment_state ?? null) === 'Parcialmente') {
+                $historyStateStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
+                } elseif (($history->establishment_state ?? null) === 'Fechado') {
+                $historyStateStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+                }
+
+                if (($history->description_status ?? null) === 'bom') {
+                $historyDescriptionStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
+                } elseif (($history->description_status ?? null) === 'razoavel') {
+                $historyDescriptionStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
+                } elseif (($history->description_status ?? null) === 'critico') {
+                $historyDescriptionStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+                }
+                @endphp
+                <tr>
+                    <td>{{ optional(optional($history->collaborator)->establishmentRelation)->name ?? 'Sem estabelecimento' }}
+                    </td>
+                    <td>{{ $history->date ? \Illuminate\Support\Carbon::parse($history->date)->format('d/m/Y') : '-' }}
+                    </td>
+                    <td style="{{ $historyStateStyle }}">{{ $history->establishment_state ?? '-' }}</td>
+                    <td style="{{ $historyDescriptionStyle }}">{{ ucfirst($history->description_status ?? '-') }}</td>
+                    <td style="white-space:pre-wrap;">{{ $history->description ?? '-' }}</td>
+                    <td>
+                        {{ optional($history->collaborator)->name ?? '-' }}
+                        <div style="font-size:12px;color:#6b7280;">
+                            {{ $history->opened_at ?? '-' }}
+                        </div>
+                    </td>
+                    <td>
+                        {{ optional($history->closedByCollaborator)->name ?? '-' }}
+                        <div style="font-size:12px;color:#6b7280;">
+                            {{ $history->closed_at ?? '-' }}
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7">Nenhum histórico de gestão encontrado para os filtros informados.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 12px;">
+        {{ $establishmentHistory->links() }}
     </div>
 </div>
 @endsection

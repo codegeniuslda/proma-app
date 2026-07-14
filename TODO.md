@@ -3,4 +3,11 @@
 - [x] Atualizar validações de store/update no CollaboratorController
 - [x] Atualizar form de colaboradores com campo Código do Trabalhador
 - [x] Atualizar listagem de colaboradores para exibir código
+- [x] Implementar controller de exportação SQL (completo e por módulo)
+- [x] Adicionar rotas de exportação SQL (somente admin)
+- [x] Adicionar links no menu para exportação SQL
+- [x] Agrupar exportação SQL em um módulo único "Exportar"
+- [x] Restringir não-admin para visualizar apenas Dashboard
+- [x] Adicionar histórico de estados de estabelecimento no DashboardController
+- [x] Adicionar seção de histórico de estados em resources/views/dashboard/index.blade.php
 - [ ] Validar sintaxe dos arquivos alterados
