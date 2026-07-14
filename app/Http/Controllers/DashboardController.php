@@ -61,6 +61,57 @@ class DashboardController extends Controller
         $justifiedCount = $entries->where('presence', 'Justificado')->count();
         $notMarkedCount = $entries->whereNull('entry_time')->count();
 
+        $allowedPerPage = [25, 50, 100];
+        $perPage = (int) $request->input('per_page', 25);
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 25;
+        }
+
+        $collaboratorsSummaryQuery = Collaborator::query()
+            ->with(['timeEntries' => function ($query) use ($from, $to, $request) {
+                if ($from) {
+                    $query->whereDate('date', '>=', $from->toDateString());
+                }
+
+                if ($to) {
+                    $query->whereDate('date', '<=', $to->toDateString());
+                }
+
+                if ($request->filled('presence')) {
+                    $query->where('presence', $request->input('presence'));
+                }
+
+                if ($request->filled('establishment')) {
+                    $query->where('establishment', $request->input('establishment'));
+                }
+
+                $query->orderByDesc('date')->orderByDesc('id');
+            }]);
+
+        if ($request->filled('collaborator_id')) {
+            $collaboratorsSummaryQuery->where('id', $request->input('collaborator_id'));
+        }
+
+        if ($request->filled('establishment')) {
+            $collaboratorsSummaryQuery->where('establishment', $request->input('establishment'));
+        }
+
+        $collaboratorsSummary = $collaboratorsSummaryQuery
+            ->orderBy('name')
+            ->paginate($perPage)
+            ->withQueryString()
+            ->through(function ($collaborator) {
+                $lastEntry = $collaborator->timeEntries->first();
+
+                return [
+                    'name' => $collaborator->name,
+                    'establishment' => $collaborator->establishment,
+                    'last_date' => $lastEntry ? $lastEntry->date : null,
+                    'presence' => $lastEntry ? $lastEntry->presence : null,
+                    'description' => $lastEntry ? $lastEntry->description : null,
+                ];
+            });
+
         $managementQuery = EstablishmentManagement::with(['collaborator.establishmentRelation', 'closedByCollaborator'])
             ->orderByDesc('date')
             ->orderByDesc('id');
@@ -114,6 +165,8 @@ class DashboardController extends Controller
             'presenceFilter' => $request->input('presence'),
             'collaboratorFilter' => $request->input('collaborator_id'),
             'establishmentFilter' => $request->input('establishment'),
+            'collaboratorsSummary' => $collaboratorsSummary,
+            'perPage' => $perPage,
         ]);
     }
 }

@@ -92,6 +92,72 @@
     </div>
 </div>
 
+<div class="card mb-16">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;" class="mb-16">
+        <h2 style="margin:0;">Resumo por Colaboradores</h2>
+        <form method="GET" action="{{ route('dashboard') }}" style="display:flex;gap:8px;align-items:center;">
+            <input type="hidden" name="period" value="{{ $period }}">
+            <input type="hidden" name="date_from" value="{{ $from }}">
+            <input type="hidden" name="date_to" value="{{ $to }}">
+            <input type="hidden" name="collaborator_id" value="{{ $collaboratorFilter }}">
+            <input type="hidden" name="presence" value="{{ $presenceFilter }}">
+            <input type="hidden" name="establishment" value="{{ $establishmentFilter }}">
+
+            <label for="per_page" style="margin:0;">Mostrar</label>
+            <select id="per_page" name="per_page" onchange="this.form.submit()">
+                <option value="25" @selected((int) $perPage===25)>25</option>
+                <option value="50" @selected((int) $perPage===50)>50</option>
+                <option value="100" @selected((int) $perPage===100)>100</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Colaborador</th>
+                    <th>Estabelecimento</th>
+                    <th>Última Data</th>
+                    <th>Presença</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($collaboratorsSummary as $item)
+                @php
+                $presenceStyle = '';
+                if (($item['presence'] ?? null) === 'Presente') {
+                $presenceStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
+                } elseif (($item['presence'] ?? null) === 'Justificado') {
+                $presenceStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
+                } elseif (($item['presence'] ?? null) === 'Ausente') {
+                $presenceStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+                }
+                @endphp
+                <tr>
+                    <td>{{ $item['name'] }}</td>
+                    <td>{{ $item['establishment'] ?? '-' }}</td>
+                    <td>
+                        {{ $item['last_date'] ? \Illuminate\Support\Carbon::parse($item['last_date'])->format('d/m/Y') : '-' }}
+                    </td>
+                    <td style="{{ $presenceStyle }}">{{ $item['presence'] ?? '-' }}</td>
+                    <td style="white-space:pre-wrap;">{{ $item['description'] ?? '-' }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5">Nenhum colaborador encontrado para os filtros informados.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top:12px;">
+        {{ $collaboratorsSummary->links() }}
+    </div>
+</div>
+
 <div class="card">
     <h2 class="mb-16">Último Estado por Estabelecimento</h2>
     <div class="table-wrap">
