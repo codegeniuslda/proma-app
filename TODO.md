@@ -3,11 +3,13 @@
 - [x] Atualizar validações de store/update no CollaboratorController
 - [x] Atualizar form de colaboradores com campo Código do Trabalhador
 - [x] Atualizar listagem de colaboradores para exibir código
-- [x] Implementar controller de exportação SQL (completo e por módulo)
-- [x] Adicionar rotas de exportação SQL (somente admin)
-- [x] Adicionar links no menu para exportação SQL
-- [x] Agrupar exportação SQL em um módulo único "Exportar"
+- [x] Remover lógica de exportação SQL/Excel do fluxo
+- [x] Implementar controller de exportação PDF (completo e por módulo)
+- [x] Manter rotas do módulo exportar apontando para PDF (somente admin)
+- [x] Atualizar labels/botões da tela Exportar para PDF
 - [x] Restringir não-admin para visualizar apenas Dashboard
 - [x] Adicionar histórico de estados de estabelecimento no DashboardController
 - [x] Adicionar seção de histórico de estados em resources/views/dashboard/index.blade.php
-- [ ] Validar sintaxe dos arquivos alterados
+- [x] Remover dependência maatwebsite/excel e arquivos app/Exports/\*
+- [x] Adicionar dependência barryvdh/laravel-dompdf
+- [x] Validar sintaxe dos arquivos alterados
