@@ -46,11 +46,16 @@
     <label for="presence">Presença</label>
     <select id="presence" name="presence" required>
         <option value="Presente" @selected(old('presence', $timeEntry->presence ?? '') == 'Presente')>Presente</option>
-        <option value="Nao Presente" @selected(old('presence', $timeEntry->presence ?? '') == 'Nao Presente')>Nao
-            Presente</option>
+        <option value="Ausente" @selected(old('presence', $timeEntry->presence ?? '') == 'Ausente')>Ausente</option>
+        <option value="Justificado" @selected(old('presence', $timeEntry->presence ?? '') == 'Justificado')>Justificado
+        </option>
     </select>
 </div>
 
+<div class="mb-16">
+    <label for="description">Descrição (justificativa/ocorrência)</label>
+    <textarea id="description" name="description">{{ old('description', $timeEntry->description ?? '') }}</textarea>
+</div>
 
 <div class="actions">
     <button class="btn btn-primary" type="submit">Salvar</button>

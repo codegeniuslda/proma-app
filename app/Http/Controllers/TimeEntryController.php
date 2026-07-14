@@ -53,7 +53,8 @@ class TimeEntryController extends Controller
             'establishment' => ['required', 'string', 'max:255'],
             'entry_time' => ['nullable', 'date_format:H:i'],
             'exit_time' => ['nullable', 'date_format:H:i'],
-            'presence' => ['required', 'in:Presente,Nao Presente'],
+            'presence' => ['required', 'in:Presente,Ausente,Justificado'],
+            'description' => ['nullable', 'string'],
         ]);
 
         TimeEntry::create($validated);
@@ -81,7 +82,8 @@ class TimeEntryController extends Controller
             'establishment' => ['required', 'string', 'max:255'],
             'entry_time' => ['nullable', 'date_format:H:i'],
             'exit_time' => ['nullable', 'date_format:H:i'],
-            'presence' => ['required', 'in:Presente,Nao Presente'],
+            'presence' => ['required', 'in:Presente,Ausente,Justificado'],
+            'description' => ['nullable', 'string'],
         ]);
 
         $timeEntry->update($validated);

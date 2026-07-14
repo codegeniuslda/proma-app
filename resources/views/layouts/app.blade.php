@@ -198,9 +198,9 @@
     <nav>
         <a href="{{ route('dashboard') }}">Dashboard</a>
         <a href="{{ route('time-entries.index') }}">Registros de Ponto</a>
+        <a href="{{ route('establishment-managements.index') }}">Gestão do Estabelecimento</a>
         <a href="{{ route('collaborators.index') }}">Colaboradores</a>
         <a href="{{ route('establishments.index') }}">Estabelecimentos</a>
-        <a href="{{ route('establishment-managements.index') }}">Gestão do Estabelecimento</a>
         <!-- <a href="{{ route('time-entries.import.form') }}">Importar Excel</a> -->
     </nav>
 
