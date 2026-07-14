@@ -22,7 +22,18 @@ class CollaboratorController extends Controller
             $perPage = 25;
         }
 
-        $collaborators = $query->orderBy('name')->paginate($perPage)->withQueryString();
+        $allowedSortBy = ['name', 'worker_code'];
+        $sortBy = $request->input('sort_by', 'name');
+        if (!in_array($sortBy, $allowedSortBy, true)) {
+            $sortBy = 'name';
+        }
+
+        $sortDir = strtolower((string) $request->input('sort_dir', 'asc'));
+        if (!in_array($sortDir, ['asc', 'desc'], true)) {
+            $sortDir = 'asc';
+        }
+
+        $collaborators = $query->orderBy($sortBy, $sortDir)->paginate($perPage)->withQueryString();
         $establishments = Establishment::orderBy('name')->get();
 
         return view('collaborators.index', compact('collaborators', 'establishments'));

@@ -39,7 +39,34 @@ class EstablishmentManagementController extends Controller
             $perPage = 25;
         }
 
-        $managements = $query->latest()->paginate($perPage)->withQueryString();
+        $allowedSortBy = [
+            'opened_at',
+            'closed_at',
+            'collaborator_name',
+            'description_status',
+            'establishment_state',
+            'date',
+        ];
+        $sortBy = $request->input('sort_by', 'date');
+        if (!in_array($sortBy, $allowedSortBy, true)) {
+            $sortBy = 'date';
+        }
+
+        $sortDir = strtolower((string) $request->input('sort_dir', 'desc'));
+        if (!in_array($sortDir, ['asc', 'desc'], true)) {
+            $sortDir = 'desc';
+        }
+
+        if ($sortBy === 'collaborator_name') {
+            $query
+                ->leftJoin('collaborators', 'establishment_managements.collaborator_id', '=', 'collaborators.id')
+                ->orderBy('collaborators.name', $sortDir)
+                ->select('establishment_managements.*');
+        } else {
+            $query->orderBy($sortBy, $sortDir);
+        }
+
+        $managements = $query->paginate($perPage)->withQueryString();
         $collaborators = Collaborator::orderBy('name')->get();
         $establishments = \App\Models\Establishment::orderBy('name')->get();
 

@@ -48,6 +48,29 @@
 
         <div class="grid grid-4" style="margin-top:12px;">
             <div>
+                <label for="sort_by">Ordenar por</label>
+                <select id="sort_by" name="sort_by">
+                    <option value="date" @selected(request('sort_by', 'date' )==='date' )>Data</option>
+                    <option value="opened_at" @selected(request('sort_by')==='opened_at' )>Hora de Entrada</option>
+                    <option value="closed_at" @selected(request('sort_by')==='closed_at' )>Hora de Saída</option>
+                    <option value="collaborator_name" @selected(request('sort_by')==='collaborator_name' )>Nome do
+                        Colaborador</option>
+                    <option value="description_status" @selected(request('sort_by')==='description_status' )>Estado da
+                        Descrição</option>
+                    <option value="establishment_state" @selected(request('sort_by')==='establishment_state' )>Estado do
+                        Estabelecimento</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="sort_dir">Direção</label>
+                <select id="sort_dir" name="sort_dir">
+                    <option value="asc" @selected(request('sort_dir')==='asc' )>Crescente</option>
+                    <option value="desc" @selected(request('sort_dir', 'desc' )==='desc' )>Decrescente</option>
+                </select>
+            </div>
+
+            <div>
                 <label for="per_page">Mostrar</label>
                 <select id="per_page" name="per_page">
                     <option value="25" @selected((int) request('per_page', 25)===25)>25</option>

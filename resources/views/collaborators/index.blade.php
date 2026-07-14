@@ -22,6 +22,23 @@
             </div>
 
             <div>
+                <label for="sort_by">Ordenar por</label>
+                <select id="sort_by" name="sort_by">
+                    <option value="name" @selected(request('sort_by', 'name' )==='name' )>Nome</option>
+                    <option value="worker_code" @selected(request('sort_by')==='worker_code' )>Código do Trabalhador
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="sort_dir">Direção</label>
+                <select id="sort_dir" name="sort_dir">
+                    <option value="asc" @selected(request('sort_dir', 'asc' )==='asc' )>Crescente</option>
+                    <option value="desc" @selected(request('sort_dir')==='desc' )>Decrescente</option>
+                </select>
+            </div>
+
+            <div>
                 <label for="per_page">Mostrar</label>
                 <select id="per_page" name="per_page">
                     <option value="25" @selected((int) request('per_page', 25)===25)>25</option>
