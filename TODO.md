@@ -13,3 +13,6 @@
 - [x] Remover dependência maatwebsite/excel e arquivos app/Exports/\*
 - [x] Adicionar dependência barryvdh/laravel-dompdf
 - [x] Validar sintaxe dos arquivos alterados
+- [ ] Aplicar filtros e ordenação no export PDF por módulo (mesma lógica das listagens)
+- [ ] Preservar query string atual nos links de exportação
+- [ ] Validar sintaxe após ajustes de filtros/sort
