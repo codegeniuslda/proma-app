@@ -61,13 +61,13 @@ class CollaboratorController extends Controller
 
         $collaborator->update($validated);
 
-        return redirect()->route('collaborators.index')->with('success', 'Colaborador atualizado com sucesso.');
+        return redirect()->route('collaborators.index')->with('success', 'Colaborador atualizado com sucesso!');
     }
 
     public function destroy(Collaborator $collaborator)
     {
         $collaborator->delete();
 
-        return redirect()->route('collaborators.index')->with('success', 'Colaborador removido com sucesso.');
+        return redirect()->route('collaborators.index')->with('success', 'Colaborador removido com sucesso.!');
     }
 }
