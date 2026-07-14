@@ -18,6 +18,12 @@ class TimeEntryController extends Controller
             $query->where('collaborator_id', $request->input('collaborator_id'));
         }
 
+        if ($request->filled('establishment_id')) {
+            $query->whereHas('collaborator', function ($q) use ($request) {
+                $q->where('establishment_id', $request->input('establishment_id'));
+            });
+        }
+
         if ($request->filled('date_from')) {
             $query->whereDate('date', '>=', $request->input('date_from'));
         }
@@ -34,8 +40,9 @@ class TimeEntryController extends Controller
 
         $timeEntries = $query->latest()->paginate($perPage)->withQueryString();
         $collaborators = Collaborator::orderBy('name')->get();
+        $establishments = \App\Models\Establishment::orderBy('name')->get();
 
-        return view('time_entries.index', compact('timeEntries', 'collaborators'));
+        return view('time_entries.index', compact('timeEntries', 'collaborators', 'establishments'));
     }
 
     public function create()

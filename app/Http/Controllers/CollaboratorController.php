@@ -8,11 +8,24 @@ use Illuminate\Http\Request;
 
 class CollaboratorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $collaborators = Collaborator::with('establishmentRelation')->orderBy('name')->paginate(25);
+        $query = Collaborator::with('establishmentRelation');
 
-        return view('collaborators.index', compact('collaborators'));
+        if ($request->filled('establishment_id')) {
+            $query->where('establishment_id', $request->input('establishment_id'));
+        }
+
+        $allowedPerPage = [25, 50, 100];
+        $perPage = (int) $request->input('per_page', 25);
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 25;
+        }
+
+        $collaborators = $query->orderBy('name')->paginate($perPage)->withQueryString();
+        $establishments = Establishment::orderBy('name')->get();
+
+        return view('collaborators.index', compact('collaborators', 'establishments'));
     }
 
     public function create()

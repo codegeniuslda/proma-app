@@ -12,6 +12,18 @@
     <form method="GET" action="{{ route('establishment-managements.index') }}" class="card mb-16" style="padding:12px;">
         <div class="grid grid-4">
             <div>
+                <label for="establishment_id">Estabelecimento</label>
+                <select id="establishment_id" name="establishment_id">
+                    <option value="">Todos</option>
+                    @foreach($establishments as $establishment)
+                    <option value="{{ $establishment->id }}" @selected(request('establishment_id')==$establishment->id)>
+                        {{ $establishment->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
                 <label for="collaborator_id">Colaborador</label>
                 <select id="collaborator_id" name="collaborator_id">
                     <option value="">Todos</option>
@@ -32,7 +44,9 @@
                 <label for="date_to">Data Final</label>
                 <input type="date" id="date_to" name="date_to" value="{{ request('date_to') }}">
             </div>
+        </div>
 
+        <div class="grid grid-4" style="margin-top:12px;">
             <div>
                 <label for="per_page">Mostrar</label>
                 <select id="per_page" name="per_page">

@@ -19,6 +19,12 @@ class EstablishmentManagementController extends Controller
             $query->where('collaborator_id', $request->input('collaborator_id'));
         }
 
+        if ($request->filled('establishment_id')) {
+            $query->whereHas('collaborator', function ($q) use ($request) {
+                $q->where('establishment_id', $request->input('establishment_id'));
+            });
+        }
+
         if ($request->filled('date_from')) {
             $query->whereDate('date', '>=', $request->input('date_from'));
         }
@@ -35,8 +41,9 @@ class EstablishmentManagementController extends Controller
 
         $managements = $query->latest()->paginate($perPage)->withQueryString();
         $collaborators = Collaborator::orderBy('name')->get();
+        $establishments = \App\Models\Establishment::orderBy('name')->get();
 
-        return view('establishment_managements.index', compact('managements', 'collaborators'));
+        return view('establishment_managements.index', compact('managements', 'collaborators', 'establishments'));
     }
 
     public function create()
