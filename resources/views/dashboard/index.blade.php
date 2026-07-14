@@ -46,7 +46,8 @@
             <select name="presence" id="presence">
                 <option value="">Todas</option>
                 <option value="Presente" @selected($presenceFilter==='Presente' )>Presente</option>
-                <option value="Nao Presente" @selected($presenceFilter==='Nao Presente' )>Nao Presente</option>
+                <option value="Ausente" @selected($presenceFilter==='Ausente' )>Ausente</option>
+                <option value="Justificado" @selected($presenceFilter==='Justificado' )>Justificado</option>
             </select>
         </div>
         <div>
@@ -60,16 +61,6 @@
                 @endforeach
             </select>
         </div>
-        <div>
-            <label for="establishment_state">Estado Estabelecimento (opcional)</label>
-            <select name="establishment_state" id="establishment_state">
-                <option value="">Todos</option>
-                <option value="Aberto" @selected($establishmentStateFilter==='Aberto' )>Aberto</option>
-                <option value="Fechado" @selected($establishmentStateFilter==='Fechado' )>Fechado</option>
-                <option value="Parcialmente" @selected($establishmentStateFilter==='Parcialmente' )>Parcialmente
-                </option>
-            </select>
-        </div>
         <div class="actions" style="align-self:end;">
             <button type="submit" class="btn btn-primary">Aplicar</button>
             <a href="{{ route('dashboard') }}" class="btn btn-secondary">Limpar</a>
@@ -78,28 +69,24 @@
 </div>
 
 <div class="card mb-16">
-    <h2 class="mb-16">Presenças e Ausências por Colaborador</h2>
+    <h2 class="mb-16">Resumo Numérico (Estabelecimento Filtrado)</h2>
     <div class="table-wrap">
         <table>
             <thead>
                 <tr>
-                    <th>Colaborador</th>
                     <th>Presenças</th>
-                    <th>Ausências</th>
+                    <th>Ausentes</th>
+                    <th>Justificado</th>
+                    <th>Não Marcado</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($collaboratorStats as $stat)
                 <tr>
-                    <td>{{ $stat['name'] }}</td>
-                    <td>{{ $stat['present'] }}</td>
-                    <td>{{ $stat['absent'] }}</td>
+                    <td>{{ $presenceSummary['present'] }}</td>
+                    <td>{{ $presenceSummary['absent'] }}</td>
+                    <td>{{ $presenceSummary['justified'] }}</td>
+                    <td>{{ $presenceSummary['not_marked'] }}</td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="3">Sem dados no período selecionado.</td>
-                </tr>
-                @endforelse
             </tbody>
         </table>
     </div>
@@ -113,34 +100,19 @@
                 <tr>
                     <th>Estabelecimento</th>
                     <th>Data</th>
-                    <th>Presença</th>
-                    <th>Status Descrição</th>
-                    <th>Estado Estabelecimento</th>
+                    <th>Estado do Estabelecimento</th>
+                    <th>Estado da Descrição</th>
                     <th>Descrição</th>
+                    <th>Aberto por / Abertura</th>
+                    <th>Fechado por / Fechamento</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($establishmentStatuses as $item)
                 @php
-                $presenceStyle = '';
-                if ($item['last_entry']) {
-                $presenceStyle = $item['last_entry']->presence === 'Presente'
-                ? 'background-color:#dcfce7;color:#166534;font-weight:600;'
-                : 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-                }
-
-                $descriptionStatusStyle = '';
-                if ($item['last_entry']) {
-                if ($item['last_entry']->description_status === 'critico') {
-                $descriptionStatusStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-                } elseif ($item['last_entry']->description_status === 'razoavel') {
-                $descriptionStatusStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-                } elseif ($item['last_entry']->description_status === 'bom') {
-                $descriptionStatusStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
-                }
-                }
-
                 $establishmentStateStyle = '';
+                $descriptionStatusStyle = '';
+
                 if ($item['last_entry']) {
                 if ($item['last_entry']->establishment_state === 'Aberto') {
                 $establishmentStateStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
@@ -149,25 +121,48 @@
                 } elseif ($item['last_entry']->establishment_state === 'Fechado') {
                 $establishmentStateStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
                 }
+
+                if ($item['last_entry']->description_status === 'bom') {
+                $descriptionStatusStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
+                } elseif ($item['last_entry']->description_status === 'razoavel') {
+                $descriptionStatusStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
+                } elseif ($item['last_entry']->description_status === 'critico') {
+                $descriptionStatusStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
+                }
                 }
                 @endphp
                 <tr>
                     <td>{{ $item['name'] }}</td>
                     @if($item['last_entry'])
                     <td>{{ \Illuminate\Support\Carbon::parse($item['last_entry']->date)->format('d/m/Y') }}</td>
-                    <td style="{{ $presenceStyle }}">{{ $item['last_entry']->presence }}</td>
-                    <td style="{{ $descriptionStatusStyle }}">{{ $item['last_entry']->description_status ?? '-' }}</td>
                     <td style="{{ $establishmentStateStyle }}">{{ $item['last_entry']->establishment_state ?? '-' }}
                     </td>
-                    <td style="white-space:pre-wrap;">{{ $item['last_entry']->description }}</td>
+                    <td style="{{ $descriptionStatusStyle }}">
+                        {{ ucfirst($item['last_entry']->description_status ?? '-') }}</td>
+                    <td style="white-space:pre-wrap;">{{ $item['last_entry']->description ?? '-' }}</td>
+                    <td>
+                        {{ $item['last_entry']->collaborator->name ?? '-' }}
+                        <div style="font-size:12px;color:#6b7280;">
+                            {{ $item['last_entry']->opened_at ?? '-' }}
+                        </div>
+                    </td>
+                    <td>
+                        {{ $item['last_entry']->closedByCollaborator->name ?? '-' }}
+                        <div style="font-size:12px;color:#6b7280;">
+                            {{ $item['last_entry']->closed_at ?? '-' }}
+                        </div>
+                    </td>
                     @else
-                    <td colspan="5">Sem registros</td>
+                    <td colspan="6">Sem registros</td>
                     @endif
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6">Nenhum estabelecimento cadastrado.</td>
+                    <td colspan="7">Nenhum estabelecimento cadastrado.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+</div>
+@endsection
