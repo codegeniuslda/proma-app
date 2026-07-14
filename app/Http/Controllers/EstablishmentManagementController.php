@@ -10,7 +10,10 @@ class EstablishmentManagementController extends Controller
 {
     public function index(Request $request)
     {
-        $query = EstablishmentManagement::with(['collaborator', 'closedByCollaborator']);
+        $query = EstablishmentManagement::with([
+            'collaborator.establishmentRelation',
+            'closedByCollaborator',
+        ]);
 
         if ($request->filled('collaborator_id')) {
             $query->where('collaborator_id', $request->input('collaborator_id'));

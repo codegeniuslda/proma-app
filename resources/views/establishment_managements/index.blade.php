@@ -53,6 +53,7 @@
         <thead>
             <tr>
                 <th>Data</th>
+                <th>Estabelecimento</th>
                 <th>Colaborador que abriu</th>
                 <th>Colaborador que fechou</th>
                 <th>Abertura</th>
@@ -85,6 +86,7 @@
             @endphp
             <tr>
                 <td>{{ $item->date->format('d/m/Y') }}</td>
+                <td>{{ optional(optional($item->collaborator)->establishmentRelation)->name ?? '-' }}</td>
                 <td>{{ $item->collaborator->name ?? '-' }}</td>
                 <td>{{ $item->closedByCollaborator->name ?? '-' }}</td>
                 <td>{{ $item->opened_at ?? '-' }}</td>
@@ -113,7 +115,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="8">Nenhum registro encontrado.</td>
+                <td colspan="9">Nenhum registro encontrado.</td>
             </tr>
             @endforelse
         </tbody>
