@@ -90,7 +90,7 @@ class SqlExportController extends Controller
             $query->where('establishment_id', $request->input('establishment_id'));
         }
 
-        $allowedSortBy = ['name', 'worker_code'];
+        $allowedSortBy = ['name', 'worker_code', 'establishment_name'];
         $sortBy = (string) $request->input('sort_by', 'name');
         if (!in_array($sortBy, $allowedSortBy, true)) {
             $sortBy = 'name';
@@ -99,6 +99,13 @@ class SqlExportController extends Controller
         $sortDir = strtolower((string) $request->input('sort_dir', 'asc'));
         if (!in_array($sortDir, ['asc', 'desc'], true)) {
             $sortDir = 'asc';
+        }
+
+        if ($sortBy === 'establishment_name') {
+            return $query
+                ->leftJoin('establishments', 'collaborators.establishment_id', '=', 'establishments.id')
+                ->orderBy('establishments.name', $sortDir)
+                ->select('collaborators.*');
         }
 
         return $query->orderBy($sortBy, $sortDir);

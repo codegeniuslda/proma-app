@@ -167,6 +167,8 @@
                     <option value="name" @selected(request('sort_by', 'name' )==='name' )>Nome</option>
                     <option value="worker_code" @selected(request('sort_by')==='worker_code' )>Código do Trabalhador
                     </option>
+                    <option value="establishment_name" @selected(request('sort_by')==='establishment_name' )>
+                        Estabelecimento</option>
                 </select>
             </div>
 
