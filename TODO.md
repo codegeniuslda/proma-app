@@ -1,10 +1,6 @@
-- [x] Criar migration da tabela de gestão do estabelecimento (establishment_managements)
-- [x] Criar model EstablishmentManagement com relacionamentos
-- [x] Criar controller resource EstablishmentManagementController (index/create/store/edit/update/destroy)
-- [x] Criar views do módulo gestão do estabelecimento (\_form/create/edit/index)
-- [x] Registrar rotas resource em routes/web.php
-- [x] Atualizar layout (menu) para acessar “Gestão do Estabelecimento”
-- [x] Remover campos de gestão do formulário de registro de ponto (time_entries/\_form.blade.php)
-- [x] Remover colunas de gestão da listagem de registro de ponto (time_entries/index.blade.php)
-- [x] Ajustar validação e persistência no TimeEntryController para não usar mais esses campos
-- [ ] Validar sintaxe PHP e revisar consistência final
+- [x] Criar migration para adicionar campo worker_code em collaborators
+- [x] Atualizar model Collaborator com worker_code em fillable
+- [x] Atualizar validações de store/update no CollaboratorController
+- [x] Atualizar form de colaboradores com campo Código do Trabalhador
+- [x] Atualizar listagem de colaboradores para exibir código
+- [ ] Validar sintaxe dos arquivos alterados

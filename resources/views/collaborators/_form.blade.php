@@ -5,6 +5,11 @@
         <input type="text" id="name" name="name" value="{{ old('name', $collaborator->name ?? '') }}" required>
     </div>
 
+    <div>
+        <label for="worker_code">Código do Trabalhador</label>
+        <input type="text" id="worker_code" name="worker_code"
+            value="{{ old('worker_code', $collaborator->worker_code ?? '') }}" required>
+    </div>
 </div>
 
 <div class="mb-16">

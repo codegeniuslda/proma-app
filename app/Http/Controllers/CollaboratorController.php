@@ -26,6 +26,7 @@ class CollaboratorController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'worker_code' => ['required', 'string', 'max:50', 'unique:collaborators,worker_code'],
             'establishment_id' => ['required', 'exists:establishments,id'],
         ]);
 
@@ -53,6 +54,7 @@ class CollaboratorController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'worker_code' => ['required', 'string', 'max:50', 'unique:collaborators,worker_code,' . $collaborator->id],
             'establishment_id' => ['required', 'exists:establishments,id'],
         ]);
 
