@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EstablishmentController;
+use App\Http\Controllers\EstablishmentManagementController;
 use App\Http\Controllers\TimeEntryController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('establishments', EstablishmentController::class);
     Route::resource('collaborators', CollaboratorController::class);
+    Route::resource('establishment-managements', EstablishmentManagementController::class);
     Route::resource('time-entries', TimeEntryController::class);
 });
 

@@ -1,4 +1,10 @@
-- [x] Atualizar README.md com versão do Laravel e instruções de execução do projeto
-- [x] Revisar conteúdo final
-- [ ] Add optional establishment filter on dashboard (controller + view)
-- [ ] Clear view cache after dashboard view update
+- [x] Criar migration da tabela de gestão do estabelecimento (establishment_managements)
+- [x] Criar model EstablishmentManagement com relacionamentos
+- [x] Criar controller resource EstablishmentManagementController (index/create/store/edit/update/destroy)
+- [x] Criar views do módulo gestão do estabelecimento (\_form/create/edit/index)
+- [x] Registrar rotas resource em routes/web.php
+- [x] Atualizar layout (menu) para acessar “Gestão do Estabelecimento”
+- [x] Remover campos de gestão do formulário de registro de ponto (time_entries/\_form.blade.php)
+- [x] Remover colunas de gestão da listagem de registro de ponto (time_entries/index.blade.php)
+- [x] Ajustar validação e persistência no TimeEntryController para não usar mais esses campos
+- [ ] Validar sintaxe PHP e revisar consistência final

@@ -51,36 +51,6 @@
     </select>
 </div>
 
-<div class="mb-16">
-    <label for="establishment_state">Estado do Estabelecimento</label>
-    <select id="establishment_state" name="establishment_state">
-        <option value="">Selecione</option>
-        <option value="Aberto" @selected(old('establishment_state', $timeEntry->establishment_state ?? '') ==
-            'Aberto')>Aberto</option>
-        <option value="Fechado" @selected(old('establishment_state', $timeEntry->establishment_state ?? '') ==
-            'Fechado')>Fechado</option>
-        <option value="Parcialmente" @selected(old('establishment_state', $timeEntry->establishment_state ?? '') ==
-            'Parcialmente')>Parcialmente</option>
-    </select>
-</div>
-
-<div class="mb-16">
-    <label for="description">Descrição (estado do equipamento / eventos)</label>
-    <textarea id="description" name="description">{{ old('description', $timeEntry->description ?? '') }}</textarea>
-</div>
-
-<div class="mb-16">
-    <label for="description_status">Estado da Descrição</label>
-    <select id="description_status" name="description_status">
-        <option value="">Selecione o estado</option>
-        <option value="critico" @selected(old('description_status', $timeEntry->description_status ?? '') ==
-            'critico')>Crítico</option>
-        <option value="razoavel" @selected(old('description_status', $timeEntry->description_status ?? '') ==
-            'razoavel')>Razoável</option>
-        <option value="bom" @selected(old('description_status', $timeEntry->description_status ?? '') == 'bom')>Bom
-        </option>
-    </select>
-</div>
 
 <div class="actions">
     <button class="btn btn-primary" type="submit">Salvar</button>

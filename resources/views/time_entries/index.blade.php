@@ -75,8 +75,6 @@
                 <th>Entrada</th>
                 <th>Saída</th>
                 <th>Presença</th>
-                <th>Estado Estabelecimento</th>
-                <th>Descrição</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -87,23 +85,6 @@
             ? 'background-color:#d1fae5;color:#065f46;font-weight:600;'
             : 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
 
-            $descriptionStyle = 'max-width:260px;white-space:pre-wrap;';
-            if ($entry->description_status === 'critico') {
-            $descriptionStyle .= 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            } elseif ($entry->description_status === 'razoavel') {
-            $descriptionStyle .= 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-            } elseif ($entry->description_status === 'bom') {
-            $descriptionStyle .= 'background-color:#dcfce7;color:#166534;font-weight:600;';
-            }
-
-            $establishmentStateStyle = '';
-            if ($entry->establishment_state === 'Aberto') {
-            $establishmentStateStyle = 'background-color:#dcfce7;color:#166534;font-weight:600;';
-            } elseif ($entry->establishment_state === 'Parcialmente') {
-            $establishmentStateStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-            } elseif ($entry->establishment_state === 'Fechado') {
-            $establishmentStateStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            }
             @endphp
             <tr>
                 <td>{{ $entry->date->format('d/m/Y') }}</td>
@@ -112,15 +93,6 @@
                 <td>{{ $entry->entry_time }}</td>
                 <td>{{ $entry->exit_time }}</td>
                 <td style="{{ $presenceStyle }}">{{ $entry->presence }}</td>
-                <td style="{{ $establishmentStateStyle }}">{{ $entry->establishment_state ?? '-' }}</td>
-                <td style="{{ $descriptionStyle }}">
-                    {{ $entry->description }}
-                    @if($entry->description_status)
-                    <div style="margin-top:6px;font-size:12px;">
-                        Estado: {{ ucfirst($entry->description_status) }}
-                    </div>
-                    @endif
-                </td>
                 <td>
                     <div class="actions">
                         <a class="btn btn-secondary" href="{{ route('time-entries.edit', $entry) }}">Editar</a>
@@ -135,7 +107,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="10">Nenhum registro encontrado.</td>
+                <td colspan="7">Nenhum registro encontrado.</td>
             </tr>
             @endforelse
         </tbody>
