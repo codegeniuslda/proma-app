@@ -38,7 +38,27 @@ class TimeEntryController extends Controller
             $perPage = 25;
         }
 
-        $timeEntries = $query->latest()->paginate($perPage)->withQueryString();
+        $allowedSortBy = ['entry_time', 'exit_time', 'presence', 'collaborator_name', 'date'];
+        $sortBy = $request->input('sort_by', 'date');
+        if (!in_array($sortBy, $allowedSortBy, true)) {
+            $sortBy = 'date';
+        }
+
+        $sortDir = strtolower((string) $request->input('sort_dir', 'desc'));
+        if (!in_array($sortDir, ['asc', 'desc'], true)) {
+            $sortDir = 'desc';
+        }
+
+        if ($sortBy === 'collaborator_name') {
+            $query
+                ->leftJoin('collaborators', 'time_entries.collaborator_id', '=', 'collaborators.id')
+                ->orderBy('collaborators.name', $sortDir)
+                ->select('time_entries.*');
+        } else {
+            $query->orderBy($sortBy, $sortDir);
+        }
+
+        $timeEntries = $query->paginate($perPage)->withQueryString();
         $collaborators = Collaborator::orderBy('name')->get();
         $establishments = \App\Models\Establishment::orderBy('name')->get();
 
