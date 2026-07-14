@@ -20,7 +20,10 @@ class SqlExportController extends Controller
             'establishment-managements' => 'Gestão do Estabelecimento',
         ];
 
-        return view('exportar.index', compact('modules'));
+        $collaborators = Collaborator::orderBy('name')->get();
+        $establishments = Establishment::orderBy('name')->get();
+
+        return view('exportar.index', compact('modules', 'collaborators', 'establishments'));
     }
 
     public function exportFullBackup(Request $request)
