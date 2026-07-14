@@ -82,40 +82,39 @@
         <tbody>
             @forelse ($timeEntries as $entry)
             @php
-            if ($entry->presence === 'Presente') {
-            $presenceStyle = 'background-color:#d1fae5;color:#065f46;font-weight:600;';
-            } elseif ($entry->presence === 'Justificado') {
-            $presenceStyle = 'background-color:#ffedd5;color:#9a3412;font-weight:600;';
-            } else {
             $presenceStyle = 'background-color:#fee2e2;color:#991b1b;font-weight:600;';
-            }
 
-            @endphp
-            <tr>
-                <td>{{ $entry->date->format('d/m/Y') }}</td>
-                <td>{{ $entry->collaborator->name ?? '-' }}</td>
-                <td>{{ $entry->establishment }}</td>
-                <td>{{ $entry->entry_time }}</td>
-                <td>{{ $entry->exit_time }}</td>
-                <td style="{{ $presenceStyle }}">{{ $entry->presence }}</td>
-                <td>{{ $entry->description ?? '-' }}</td>
-                <td>
-                    <div class="actions">
-                        <a class="btn btn-secondary" href="{{ route('time-entries.edit', $entry) }}">Editar</a>
-                        <form action="{{ route('time-entries.destroy', $entry) }}" method="POST"
-                            onsubmit="return confirm('Excluir registro?')">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger" type="submit">Excluir</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="8">Nenhum registro encontrado.</td>
-            </tr>
-            @endforelse
+            if ($entry->entry_time) {
+            $entryTime = \Carbon\Carbon::createFromFormat('H:i:s', $entry->entry_time)->format('H:i');
+
+            if ($entryTime <= '07:30' ) { $presenceStyle='background-color:#d1fae5;color:#065f46;font-weight:600;' ; }
+                elseif ($entryTime>= '07:31' && $entryTime <= '08:00' ) {
+                    $presenceStyle='background-color:#ffedd5;color:#9a3412;font-weight:600;' ; } else {
+                    $presenceStyle='background-color:#fee2e2;color:#991b1b;font-weight:600;' ; } } @endphp <tr>
+                    <td>{{ $entry->date->format('d/m/Y') }}</td>
+                    <td>{{ $entry->collaborator->name ?? '-' }}</td>
+                    <td>{{ $entry->establishment }}</td>
+                    <td>{{ $entry->entry_time }}</td>
+                    <td>{{ $entry->exit_time }}</td>
+                    <td style="{{ $presenceStyle }}">{{ $entry->presence }}</td>
+                    <td>{{ $entry->description ?? '-' }}</td>
+                    <td>
+                        <div class="actions">
+                            <a class="btn btn-secondary" href="{{ route('time-entries.edit', $entry) }}">Editar</a>
+                            <form action="{{ route('time-entries.destroy', $entry) }}" method="POST"
+                                onsubmit="return confirm('Excluir registro?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit">Excluir</button>
+                            </form>
+                        </div>
+                    </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="8">Nenhum registro encontrado.</td>
+                    </tr>
+                    @endforelse
         </tbody>
     </table>
 
