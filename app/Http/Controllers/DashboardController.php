@@ -32,34 +32,49 @@ class DashboardController extends Controller
             $to = $request->filled('date_to') ? Carbon::parse($request->input('date_to')) : null;
         }
 
-        $statsQuery = TimeEntry::query();
-
-        if ($from) {
-            $statsQuery->whereDate('date', '>=', $from->toDateString());
-        }
-
-        if ($to) {
-            $statsQuery->whereDate('date', '<=', $to->toDateString());
-        }
+        $summaryCollaboratorsQuery = Collaborator::query();
 
         if ($request->filled('collaborator_id')) {
-            $statsQuery->where('collaborator_id', $request->input('collaborator_id'));
-        }
-
-        if ($request->filled('presence')) {
-            $statsQuery->where('presence', $request->input('presence'));
+            $summaryCollaboratorsQuery->where('id', $request->input('collaborator_id'));
         }
 
         if ($request->filled('establishment')) {
-            $statsQuery->where('establishment', $request->input('establishment'));
+            $summaryCollaboratorsQuery->where('establishment', $request->input('establishment'));
         }
 
-        $entries = $statsQuery->get();
+        $summaryCollaborators = $summaryCollaboratorsQuery
+            ->with(['timeEntries' => function ($query) use ($from, $to) {
+                if ($from) {
+                    $query->whereDate('date', '>=', $from->toDateString());
+                }
 
-        $presentCount = $entries->where('presence', 'Presente')->count();
-        $absentCount = $entries->where('presence', 'Ausente')->count();
-        $justifiedCount = $entries->where('presence', 'Justificado')->count();
-        $notMarkedCount = $entries->whereNull('entry_time')->count();
+                if ($to) {
+                    $query->whereDate('date', '<=', $to->toDateString());
+                }
+
+                $query->orderByDesc('date')->orderByDesc('id');
+            }])
+            ->get();
+
+        $presentCount = 0;
+        $absentCount = 0;
+        $justifiedCount = 0;
+        $notMarkedCount = 0;
+
+        foreach ($summaryCollaborators as $collaborator) {
+            $lastEntry = $collaborator->timeEntries->first();
+            $presence = $lastEntry ? $lastEntry->presence : null;
+
+            if ($presence === 'Presente') {
+                $presentCount++;
+            } elseif ($presence === 'Ausente') {
+                $absentCount++;
+            } elseif ($presence === 'Justificado') {
+                $justifiedCount++;
+            } else {
+                $notMarkedCount++;
+            }
+        }
 
         $allowedPerPage = [25, 50, 100];
         $perPage = (int) $request->input('per_page', 25);

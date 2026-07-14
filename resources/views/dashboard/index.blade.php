@@ -30,7 +30,7 @@
             <input type="date" id="date_to" name="date_to" value="{{ $to }}">
         </div>
         <div>
-            <label for="collaborator_id">Colaborador (opcional)</label>
+            <label for="collaborator_id">Colaborador </label>
             <select name="collaborator_id" id="collaborator_id">
                 <option value="">Todos</option>
                 @foreach($collaboratorOptions as $collaborator)
@@ -42,7 +42,7 @@
             </select>
         </div>
         <div>
-            <label for="presence">Presença (opcional)</label>
+            <label for="presence">Presença</label>
             <select name="presence" id="presence">
                 <option value="">Todas</option>
                 <option value="Presente" @selected($presenceFilter==='Presente' )>Presente</option>
@@ -51,7 +51,7 @@
             </select>
         </div>
         <div>
-            <label for="establishment">Estabelecimento (opcional)</label>
+            <label for="establishment">Estabelecimento</label>
             <select name="establishment" id="establishment">
                 <option value="">Todos</option>
                 @foreach($establishmentOptions as $establishment)
